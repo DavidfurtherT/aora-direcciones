@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AORA · Pista</title>
+<meta name="description" content="AORA Fitness Wellness Festival. Febrero 2027, 2 días en el Autódromo de Tocancipá.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   DIRECCIÓN 3 · PISTA
+   Concepto: el autódromo como escenario. La página se lee como una vuelta:
+   salida (hero) → Sector 1 Move → Sector 2 Connect → Sector 3 Belong → meta.
+   Geometría: la pierna diagonal de la R (45°) corta fotos, botones y chaflanes;
+   el chevron de la A (≈62°) es la flecha de dirección; el anillo de la O es el
+   marcador que recorre el trazado. Paleta: cream = papel/pit wall, ink = texto,
+   asfalto = ink + olive (cálido), stone = línea de pista, peach = señal y meta.
+   ========================================================================== */
+:root{
+  /* Marca */
+  --cream:#F9F7F2; --ink:#3A413D; --sage:#92ACA0; --olive:#899064;
+  --peach:#FFA38B; --stone:#D6D2C4; --taupe:#C5B9AC; --logo:#142323;
+  /* Derivados */
+  --asphalt: color-mix(in oklch, var(--olive) 18%, #1c201e);   /* asfalto cálido */
+  --asphalt-2: color-mix(in oklch, var(--olive) 26%, #272c29);
+  --ink-soft: color-mix(in oklch, var(--ink) 82%, var(--cream));
+  --cream-soft: color-mix(in oklch, var(--cream) 78%, var(--asphalt));
+  --line: color-mix(in oklch, var(--stone) 70%, var(--ink));
+  --signal: #FF9A7E;                                            /* peach llevado a señal */
+  /* Tipo */
+  --f-sans:"Archivo", ui-sans-serif, system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, monospace;
+  --t-mega: clamp(3rem, 9.2vw, 9.6rem);
+  --t-xl: clamp(2.3rem, 5.6vw, 5.6rem);
+  --t-l: clamp(1.6rem, 2.8vw, 2.6rem);
+  --t-m: clamp(1.15rem, 1.5vw, 1.4rem);
+  --t-body: 1.0625rem;
+  --t-label: .72rem;
+  /* Espacio */
+  --gutter: clamp(16px, 4.5vw, 64px);
+  --section: clamp(5.5rem, 11vw, 10rem);
+  --s1:.5rem; --s2:1rem; --s3:1.5rem; --s4:2.5rem; --s5:4rem;
+  /* Forma: dos radios (0 y 2px) + chaflán a 45° de la R */
+  --r: 2px;
+  --cut: clamp(14px, 1.6vw, 22px);
+  --cut-big: clamp(40px, 7vw, 120px);
+  --ease: cubic-bezier(.22,.8,.16,1);
+  --ease-snap: cubic-bezier(.6,0,.1,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--f-sans);font-size:var(--t-body);line-height:1.55;font-variation-settings:"wdth" 100;overflow-x:clip;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3,p,ul,ol,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+::selection{background:var(--peach);color:var(--logo)}
+:focus-visible{outline:3px solid var(--signal);outline-offset:3px}
+
+/* grano fijo */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.07;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* utilitarios tipográficos */
+.mono{font-family:var(--f-mono);font-size:var(--t-label);letter-spacing:.14em;text-transform:uppercase;font-weight:500;line-height:1.4}
+.wide{font-variation-settings:"wdth" 125}
+.cond{font-variation-settings:"wdth" 62}
+.tick{display:inline-flex;align-items:center;gap:.6em}
+.tick::before{content:"";width:1.6em;height:2px;background:currentColor;opacity:.6}
+.wrap{padding-inline:var(--gutter);max-width:1600px;margin-inline:auto}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* logo */
+.logo{display:block;fill:currentColor;height:auto}
+
+/* chevron de la A como flecha */
+.chev{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:miter;stroke-linecap:square}
+
+/* ---------- Barra de dirección ---------- */
+.dirbar{position:fixed;top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));z-index:80;display:flex;align-items:center;gap:.9rem;padding:.55rem .9rem .55rem .8rem;background:var(--logo);color:var(--cream);
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.dirbar span{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase}
+.dirbar span b{color:var(--peach);font-weight:500}
+.dirbar a{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;text-decoration:none;color:var(--stone);border-left:1px solid color-mix(in oklch,var(--stone) 35%,transparent);padding-left:.9rem}
+.dirbar a:hover{color:var(--cream)}
+
+/* ---------- Riel de vuelta (navegación por sectores) ---------- */
+.lap{position:fixed;right:clamp(12px,1.6vw,26px);top:50%;transform:translateY(-50%);z-index:70;display:none}
+.lap ol{position:relative;display:grid;gap:1.15rem;padding-right:14px}
+.lap ol::before{content:"";position:absolute;right:4px;top:4px;bottom:4px;width:2px;background:color-mix(in oklch,var(--line) 60%,transparent)}
+.lap-fill{position:absolute;right:4px;top:4px;bottom:4px;width:2px;background:var(--signal);transform-origin:top;transform:scaleY(0)}
+.lap a{display:flex;justify-content:flex-end;align-items:center;gap:.6rem;text-decoration:none;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.lap a span{background:color-mix(in oklch,var(--cream) 88%,transparent);padding:.2rem .4rem;opacity:.0;transform:translateX(6px);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.lap a::after{content:"";width:10px;height:10px;margin-right:-14px;background:var(--cream);border:2px solid var(--ink);transform:rotate(45deg)}
+.lap a:hover span,.lap a:focus-visible span,.lap a.on span{opacity:1;transform:none}
+.lap a.on::after{background:var(--signal);border-color:var(--signal)}
+@media (min-width:1100px){.lap{display:block}}
+
+/* ---------- Botones ---------- */
+.btn{--bg:var(--logo);--fg:var(--cream);--ico-bg:var(--peach);--ico-fg:var(--logo);
+  position:relative;isolation:isolate;display:inline-flex;align-items:center;gap:1rem;padding:.55rem .55rem .55rem 1.35rem;min-height:3.25rem;
+  font-family:var(--f-sans);font-variation-settings:"wdth" 108;font-weight:640;font-size:.95rem;letter-spacing:.01em;color:var(--fg);text-decoration:none;border:0;background:none;cursor:pointer;
+  transition:transform .5s var(--ease),color .4s var(--ease)}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--bg);clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,var(--cut) 100%,0 calc(100% - var(--cut)));transition:background .45s var(--ease)}
+.btn-ico{display:grid;place-items:center;width:2.2rem;height:2.2rem;background:var(--ico-bg);color:var(--ico-fg);clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));transition:transform .55s var(--ease),background .45s var(--ease)}
+.btn-ico .chev{width:.95rem;height:.95rem}
+.btn:hover::before{background:color-mix(in oklch,var(--logo) 82%,var(--olive))}
+.btn:hover .btn-ico{transform:translateX(4px)}
+.btn:active{transform:scale(.97)}
+.btn--ghost{--bg:color-mix(in oklch,var(--stone) 70%,transparent);--fg:var(--ink);--ico-bg:var(--logo);--ico-fg:var(--cream)}
+.btn--ghost:hover::before{background:color-mix(in oklch,var(--stone) 50%,transparent)}
+.btn--signal{--bg:var(--peach);--fg:var(--logo);--ico-bg:var(--logo);--ico-fg:var(--peach)}
+.btn--signal:hover::before{background:var(--cream)}
+.btn--xl{font-size:clamp(1.05rem,1.6vw,1.3rem);padding:.7rem .7rem .7rem 1.8rem;min-height:4.4rem;gap:1.5rem}
+.btn--xl .btn-ico{width:3rem;height:3rem}
+
+/* ---------- Fotos: tratamiento de serie ---------- */
+.ph{position:relative;overflow:hidden;background:var(--asphalt)}
+.ph img{width:100%;height:100%;object-fit:cover;filter:grayscale(.38) contrast(1.16) brightness(.96) saturate(.85)}
+.ph::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(160deg,color-mix(in oklch,var(--olive) 30%,transparent),transparent 55%,color-mix(in oklch,var(--asphalt) 35%,transparent));mix-blend-mode:multiply}
+.cut-r{clip-path:polygon(var(--cut-big) 0,100% 0,100% calc(100% - var(--cut-big)),calc(100% - var(--cut-big)) 100%,0 100%,0 var(--cut-big))}
+.cut-s{clip-path:polygon(0 0,calc(100% - 28px) 0,100% 28px,100% 100%,28px 100%,0 calc(100% - 28px))}
+.par{height:116%!important;margin-top:-8%}
+
+/* ==========================================================================
+   HERO · SALIDA
+   ========================================================================== */
+.hero{position:relative;min-height:100dvh;display:grid;grid-template-rows:1fr auto;overflow:hidden;background:var(--cream)}
+.hero-media{position:absolute;inset:0;clip-path:polygon(44% 0,100% 0,100% 100%,62% 100%)}
+.hero-media .ph{position:absolute;inset:0}
+.hero-media img{object-position:70% 40%}
+.hero-lanes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.hero-lanes .l{stroke:var(--stone);stroke-width:2;fill:none}
+.hero-lanes .l.dash{stroke-dasharray:14 16;stroke:var(--line);opacity:.55}
+.hero-lanes .fin{stroke:var(--peach);stroke-width:7;fill:none}
+.hero-copy{position:relative;z-index:2;padding:clamp(5.5rem,10vh,8rem) var(--gutter) 0;display:flex;flex-direction:column;justify-content:space-between;gap:var(--s4);max-width:62%}
+.hero-top{display:grid;gap:.5rem;color:var(--ink-soft)}
+.hero-h{display:grid;gap:clamp(.4rem,1.4vh,1rem);padding-bottom:clamp(1.5rem,4vh,3rem)}
+.hero-h .line{display:block;overflow:hidden;padding-bottom:.06em}
+.hero-h .line > span{display:block}
+.hero-h{--hs:clamp(3rem,6.6vw,6.9rem)}
+.hero-h .t{font-size:var(--hs);line-height:.86;font-weight:300;font-variation-settings:"wdth" 112;letter-spacing:-.035em;color:var(--logo)}
+.hero-h .line > .row{display:flex;align-items:flex-end;gap:.32em;font-size:var(--hs)}
+.hero-h .logo{height:.86em;width:3.77em;aspect-ratio:842/192;color:var(--logo);flex:none;transform:translateY(-.02em)}
+.hero-sub{max-width:30ch;font-size:var(--t-m);line-height:1.35;color:var(--ink);font-variation-settings:"wdth" 92}
+.hero-cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:var(--s3)}
+.hero-hud{position:relative;z-index:3;display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;align-items:center;gap:1rem;margin:0 var(--gutter) max(var(--gutter),env(safe-area-inset-bottom));padding:.9rem 1.2rem;background:var(--logo);color:var(--stone);
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.hero-hud b{color:var(--peach);font-weight:500}
+.hero-hud a{text-decoration:none;color:var(--cream)}
+.hero-hud a:hover{color:var(--peach)}
+.hero-chevrons{position:absolute;z-index:2;right:calc(var(--gutter) + 1rem);top:clamp(5rem,12vh,7rem);display:flex;gap:4px;color:var(--peach)}
+.hero-chevrons svg{width:clamp(28px,3vw,46px);height:auto}
+
+@media (max-width:900px){
+  .hero{display:flex;flex-direction:column;min-height:auto}
+  .hero-copy{order:1} .hero-media{order:2} .hero-hud{order:3}
+  .hero-copy{max-width:none;padding-top:5.2rem}
+  .hero-media{position:relative;inset:auto;height:62dvh;min-height:380px;margin-top:var(--s4);clip-path:polygon(0 var(--cut-big),var(--cut-big) 0,100% 0,100% 100%,0 100%)}
+  .hero-lanes{display:none}
+  .hero-chevrons{display:none}
+  .hero-hud{grid-template-columns:1fr;gap:.35rem;margin-top:-2.4rem}
+  .hero-hud .hud-go{display:none}
+}
+
+/* ==========================================================================
+   MANIFIESTO
+   ========================================================================== */
+.manifesto{position:relative;padding-block:var(--section);background:var(--cream)}
+.manifesto-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--s3) var(--gutter)}
+.manifesto .label{grid-column:1 / span 3;color:var(--ink-soft)}
+.manifesto h2{grid-column:4 / span 9;font-size:var(--t-xl);line-height:.95;font-weight:340;font-variation-settings:"wdth" 118;letter-spacing:-.03em;color:var(--logo);text-wrap:balance}
+.manifesto h2 em{font-style:normal;font-weight:700;font-variation-settings:"wdth" 62;letter-spacing:-.01em}
+.manifesto .body{grid-column:4 / span 5;margin-top:var(--s4);max-width:52ch;color:var(--ink)}
+.manifesto .aside{grid-column:10 / span 3;margin-top:var(--s4);align-self:end;border-top:2px solid var(--ink);padding-top:.9rem}
+.manifesto .aside p{font-size:var(--t-m);font-variation-settings:"wdth" 80;font-weight:600;line-height:1.2;color:var(--logo)}
+.axes{grid-column:1 / -1;margin-top:var(--s5);display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink)}
+.axes li{padding:1rem 0 0;display:flex;align-items:baseline;gap:.75rem;border-right:1px dashed var(--line);padding-left:1rem}
+.axes li:first-child{padding-left:0}
+.axes li:last-child{border-right:0}
+.axes strong{font-size:var(--t-l);font-variation-settings:"wdth" 62;font-weight:650;letter-spacing:-.01em;color:var(--logo);line-height:1}
+@media (max-width:900px){
+  .manifesto .label,.manifesto h2,.manifesto .body,.manifesto .aside{grid-column:1 / -1}
+  .axes{grid-template-columns:1fr 1fr}
+  .axes li{border-right:0;padding-left:0;border-bottom:1px dashed var(--line);padding-bottom:1rem}
+}
+
+/* ==========================================================================
+   TRAZADO · momento principal
+   ========================================================================== */
+.circuit{position:relative;background:var(--asphalt);color:var(--cream)}
+.circuit-pin{position:relative;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);grid-template-rows:auto 1fr;gap:0 var(--gutter);padding:var(--section) var(--gutter)}
+.circuit-head{grid-column:1 / -1;display:flex;justify-content:space-between;align-items:end;gap:var(--s3);padding-bottom:var(--s4);border-bottom:1px solid color-mix(in oklch,var(--stone) 22%,transparent)}
+.circuit-head h2{font-size:var(--t-xl);line-height:.92;font-weight:300;font-variation-settings:"wdth" 125;letter-spacing:-.035em;max-width:13ch}
+.circuit-head h2 em{font-style:normal;color:var(--peach)}
+.circuit-head .mono{color:var(--stone);text-align:right}
+.map{position:relative;margin-top:var(--s3);align-self:center}
+.map svg{display:block;width:100%;height:auto}
+.map .base-img{filter:grayscale(1) contrast(1.35) brightness(.78)}
+.map .tint{fill:var(--olive);mix-blend-mode:multiply;opacity:.55}
+.map .shade{fill:url(#mapShade)}
+.route-base{fill:none;stroke:var(--stone);stroke-width:14;stroke-linecap:round;stroke-linejoin:round;opacity:.28}
+.route-dash{fill:none;stroke:var(--cream);stroke-width:2.5;stroke-dasharray:3 22;stroke-linecap:round;opacity:.7}
+.route-draw{fill:none;stroke:var(--peach);stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+.gate line{stroke:var(--cream);stroke-width:5}
+.gate rect{fill:var(--logo)}
+.gate text{font-family:var(--f-mono);font-size:30px;letter-spacing:.12em;fill:var(--cream);font-weight:500}
+.gate.on line{stroke:var(--peach)}
+.gate.on rect{fill:var(--peach)}
+.gate.on text{fill:var(--logo)}
+.finish line{stroke-width:9}
+.marker .ring{fill:none;stroke:var(--peach);stroke-width:7}
+.marker .core{fill:var(--cream)}
+.marker .halo{fill:var(--peach);opacity:.22}
+.map-cap{display:flex;justify-content:space-between;gap:1rem;margin-top:.8rem;color:var(--cream-soft)}
+
+.sectors{display:grid;gap:var(--s4);margin-top:var(--s3)}
+.sector{display:flex;flex-direction:column;gap:1rem}
+.sector > *{flex:none}
+.sector-tag{display:flex;align-items:center;gap:.7rem;color:var(--peach)}
+.sector-tag i{width:12px;height:12px;background:var(--peach);transform:rotate(45deg);flex:none}
+.sector h3{font-size:var(--t-l);line-height:1;font-weight:350;font-variation-settings:"wdth" 118;letter-spacing:-.02em;color:var(--cream)}
+.sector .ph{aspect-ratio:16/9;clip-path:polygon(0 0,calc(100% - 36px) 0,100% 36px,100% 100%,36px 100%,0 calc(100% - 36px))}
+.sector ul{display:grid;border-top:1px solid color-mix(in oklch,var(--stone) 25%,transparent)}
+.sector li{display:flex;align-items:baseline;gap:.8rem;padding:.62rem 0;border-bottom:1px solid color-mix(in oklch,var(--stone) 25%,transparent);font-variation-settings:"wdth" 88;font-size:1rem;line-height:1.3}
+.sector li .chev{flex:none;width:.7em;height:.7em;color:var(--peach);transform:translateY(.05em)}
+.sector li small{display:block;color:var(--cream-soft);font-size:.86rem;font-variation-settings:"wdth" 92}
+.hud{display:none}
+
+/* Modo pin (JS + movimiento permitido) */
+.pin-on .circuit-pin{min-height:100dvh;height:100dvh;padding-block:clamp(4.6rem,9vh,6rem) clamp(1.2rem,4vh,2.5rem);grid-template-rows:auto minmax(0,1fr) auto}
+.pin-on .circuit-head{padding-bottom:var(--s2)}
+.pin-on .circuit-head h2{font-size:clamp(2rem,3.6vw,3.6rem)}
+.pin-on .map{grid-row:2;grid-column:1;height:100%;min-height:0;display:flex;align-items:center}
+.pin-on .map svg{height:100%;width:100%}
+.pin-on .sectors{grid-row:2;grid-column:2;position:relative;margin-top:var(--s3);min-height:0}
+.pin-on .sector{position:absolute;inset:0;opacity:0;visibility:hidden;transform:translateY(24px);transition:opacity .6s var(--ease),transform .7s var(--ease),visibility 0s linear .7s}
+.pin-on .sector.is-on{opacity:1;visibility:visible;transform:none;transition:opacity .6s var(--ease) .08s,transform .8s var(--ease) .08s,visibility 0s}
+.pin-on .hud{grid-column:1 / -1;grid-row:3;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1.2rem;padding-top:var(--s2);color:var(--stone)}
+.hud-bar{position:relative;height:2px;background:color-mix(in oklch,var(--stone) 25%,transparent)}
+.hud-bar i{position:absolute;inset:0;background:var(--peach);transform-origin:left;transform:scaleX(0)}
+.hud-bar s{position:absolute;top:-5px;width:2px;height:12px;background:var(--stone)}
+.hud b{color:var(--peach);font-weight:500}
+.map-cap{display:flex}
+.pin-on .map-cap{display:none}
+@media (max-width:900px){
+  .circuit-pin{grid-template-columns:1fr}
+  .circuit-head{flex-direction:column;align-items:flex-start}
+  .circuit-head .mono{text-align:left}
+  .pin-on .circuit-pin{grid-template-rows:auto auto minmax(0,1fr) auto;padding-top:4.2rem;gap:0}
+  .pin-on .circuit-head h2{font-size:1.75rem}
+  .pin-on .circuit-head .mono{display:none}
+  .pin-on .map{grid-row:2;grid-column:1;height:auto;margin-top:.8rem}
+  .pin-on .sectors{grid-row:3;grid-column:1;margin-top:1rem}
+  .pin-on .sector .ph{aspect-ratio:4/1}
+  .pin-on .sector{gap:.7rem}
+  .pin-on .sector h3{font-size:1.45rem}
+  .pin-on .sector li{padding:.42rem 0;font-size:.95rem}
+  .pin-on .sector li small{display:none}
+  .pin-on .hud{grid-row:4;grid-template-columns:auto 1fr}
+  .pin-on .hud .hud-r{display:none}
+}
+html:not(.pin-on) .map{grid-column:1 / -1}
+html:not(.pin-on) .sectors{grid-column:1 / -1;margin-top:var(--s5)}
+@media (min-width:901px){html:not(.pin-on) .sectors{grid-template-columns:repeat(3,1fr);gap:var(--gutter)}}
+.pin-on .sector .ph{aspect-ratio:21/9}
+
+/* ==========================================================================
+   GRILLA DE SALIDA · para quién
+   ========================================================================== */
+.grid-sec{padding-block:var(--section);background:var(--cream);position:relative;overflow:hidden}
+.grid-head{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--s3) var(--gutter);margin-bottom:var(--s5)}
+.grid-head .mono{grid-column:1 / span 3;color:var(--ink-soft)}
+.grid-head h2{grid-column:4 / span 9;font-size:var(--t-xl);line-height:.92;font-weight:300;font-variation-settings:"wdth" 125;letter-spacing:-.035em;color:var(--logo)}
+.grid-head p{grid-column:4 / span 6;max-width:50ch}
+.starting{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.2rem,2.5vw,2.4rem) clamp(2rem,8vw,9rem);padding-bottom:clamp(4rem,8vw,8rem)}
+.starting::before{content:"";position:absolute;left:50%;top:-2rem;bottom:0;width:0;border-left:2px dashed var(--line);opacity:.6}
+.slot{position:relative;padding:1.3rem 1.4rem 1.4rem;min-height:9.5rem;display:grid;align-content:space-between;gap:1rem}
+.slot:nth-child(even){transform:translateY(55%)}
+.slot::before{content:"";position:absolute;inset:0;border:2px solid var(--ink);border-bottom:0;pointer-events:none}
+.slot::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:repeating-linear-gradient(90deg,var(--ink) 0 10px,transparent 10px 18px);opacity:.5}
+.slot .who{font-size:clamp(1.9rem,3.6vw,3.3rem);line-height:.9;font-variation-settings:"wdth" 62;font-weight:700;letter-spacing:-.01em;color:var(--logo);text-transform:uppercase}
+.slot .what{display:flex;align-items:center;justify-content:space-between;gap:1rem;color:var(--ink)}
+.slot .what .chev{color:var(--logo);width:1.2rem;height:1.2rem;transition:transform .5s var(--ease)}
+.slot .lane{position:absolute;top:1.3rem;right:1.4rem;color:var(--ink-soft)}
+.slot:hover::before{border-color:var(--logo)}
+.slot:hover .chev{transform:translateX(6px)}
+.slot.hl{background:var(--logo);color:var(--cream)}
+.slot.hl .who{color:var(--cream)}
+.slot.hl .what{color:var(--stone)}
+.slot.hl .what .chev{color:var(--peach)}
+.slot.hl::before{border-color:var(--logo)}
+@media (max-width:760px){
+  .grid-head .mono,.grid-head h2,.grid-head p{grid-column:1 / -1}
+  .starting{grid-template-columns:1fr;gap:.9rem;padding-bottom:0}
+  .starting::before{display:none}
+  .slot:nth-child(even){transform:none;margin-left:14%}
+  .slot:nth-child(odd){margin-right:14%}
+  .slot{min-height:7.4rem}
+}
+
+/* ==========================================================================
+   PADDOCK · capas
+   ========================================================================== */
+.paddock{position:relative;padding-block:var(--section) calc(var(--section) * 1.1);background:var(--stone);overflow:hidden}
+.paddock-lines{position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent 0 46px,color-mix(in oklch,var(--cream) 55%,transparent) 46px 48px);opacity:.6;pointer-events:none}
+.paddock .wrap{position:relative}
+.paddock-head{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--s3);margin-bottom:var(--s5);flex-wrap:wrap}
+.paddock-head h2{font-size:var(--t-xl);line-height:.92;font-weight:300;font-variation-settings:"wdth" 125;letter-spacing:-.035em;color:var(--logo);max-width:16ch}
+.paddock-head .mono{color:var(--ink)}
+.stack{position:relative;display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:clamp(48px,6vw,92px)}
+.stack figure{position:relative}
+.stack .ph{position:absolute;inset:0}
+.stack figcaption{position:absolute;z-index:2;left:0;bottom:0;transform:translateY(55%);background:var(--cream);color:var(--logo);padding:.5rem .75rem}
+.st-a{grid-column:1 / span 7;grid-row:1 / span 6}
+.st-b{grid-column:8 / span 5;grid-row:1 / span 4;z-index:2}
+.st-c{grid-column:9 / span 4;grid-row:6 / span 4;z-index:3}
+.st-d{grid-column:5 / span 4;grid-row:6 / span 4;z-index:2}
+.st-e{grid-column:1 / span 4;grid-row:8 / span 3;z-index:2}
+.stack .ring{position:relative;z-index:4;grid-column:11 / span 2;grid-row:9 / span 2;width:clamp(70px,9vw,140px);aspect-ratio:1;border-radius:50%;border:clamp(8px,1vw,14px) solid var(--peach);align-self:center;justify-self:center;pointer-events:none}
+@media (max-width:760px){
+  .stack{grid-template-columns:1fr 1fr;grid-auto-rows:auto;gap:2.4rem .8rem}
+  .stack figure{grid-column:auto!important;grid-row:auto!important;aspect-ratio:4/5;transform:none!important}
+  .stack .st-a{grid-column:1 / -1!important;aspect-ratio:4/3}
+  .stack .st-e{display:none}
+  .stack .ring{display:none}
+  .stack figcaption{font-size:.6rem}
+}
+
+/* ==========================================================================
+   SEDE
+   ========================================================================== */
+.venue{position:relative;min-height:100dvh;display:grid;align-items:end;background:var(--asphalt);color:var(--cream);overflow:hidden}
+.venue .ph{position:absolute;inset:0}
+.venue .ph img{object-position:50% 60%;filter:grayscale(.45) contrast(1.2) brightness(.9) saturate(.8)}
+.venue .ph::after{background:linear-gradient(180deg,color-mix(in oklch,var(--asphalt) 40%,transparent) 0%,transparent 35%,transparent 55%,var(--asphalt) 100%)}
+.venue-card{position:relative;z-index:2;margin:0 var(--gutter) var(--gutter);max-width:1120px;display:grid;grid-template-columns:1.25fr 1fr;gap:var(--s4) var(--gutter);padding:clamp(1.5rem,3.5vw,3.2rem);background:var(--asphalt);
+  clip-path:polygon(0 0,calc(100% - 48px) 0,100% 48px,100% 100%,48px 100%,0 calc(100% - 48px))}
+.venue-card h2{font-size:var(--t-xl);line-height:.92;font-weight:300;font-variation-settings:"wdth" 125;letter-spacing:-.035em;text-wrap:balance}
+.venue-card .meta{display:grid;gap:1.1rem;align-content:end}
+.venue-card .meta dl{display:grid;gap:.9rem;margin:0}
+.venue-card .meta dt{color:var(--peach)}
+.venue-card .meta dd{margin:0;font-size:var(--t-m);font-variation-settings:"wdth" 90;line-height:1.3}
+@media (max-width:900px){.venue-card{grid-template-columns:1fr}}
+
+/* ==========================================================================
+   META · entradas KOBAII
+   ========================================================================== */
+.finish-sec{position:relative;padding-block:var(--section);background:var(--cream);overflow:hidden}
+.finish-band{position:absolute;left:-10%;right:-10%;top:clamp(2.5rem,6vw,5rem);height:clamp(18px,2vw,28px);transform:rotate(-4deg);
+  background:repeating-linear-gradient(90deg,var(--peach) 0 56px,var(--cream) 56px 62px)}
+.finish-grid{position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:var(--s4) var(--gutter);margin-top:var(--s4)}
+.finish-grid .mono{grid-column:1 / span 3;color:var(--ink-soft)}
+.finish-grid h2{grid-column:4 / span 9;font-size:var(--t-xl);line-height:.92;font-weight:300;font-variation-settings:"wdth" 125;letter-spacing:-.035em;color:var(--logo);text-wrap:balance}
+.finish-grid h2 strong{font-weight:700;font-variation-settings:"wdth" 62;letter-spacing:-.01em}
+.steps{grid-column:4 / span 9;display:grid;grid-template-columns:repeat(3,1fr);counter-reset:s;border-top:2px solid var(--ink)}
+.steps li{position:relative;padding:1.2rem 1.4rem 1.4rem 0;display:grid;gap:.7rem;align-content:start}
+.steps li + li{padding-left:1.4rem;border-left:1px dashed var(--line)}
+.steps .n{font-size:clamp(3rem,6vw,5.5rem);line-height:.8;font-variation-settings:"wdth" 62;font-weight:250;color:var(--olive)}
+.steps h3{font-size:1.25rem;font-variation-settings:"wdth" 100;font-weight:620;color:var(--logo);line-height:1.15}
+.steps p{color:var(--ink-soft);font-size:.98rem}
+.finish-cta{grid-column:4 / span 9;display:flex;flex-wrap:wrap;align-items:center;gap:1rem 2rem}
+.finish-cta p{max-width:34ch;color:var(--ink-soft);font-size:.95rem}
+@media (max-width:900px){
+  .finish-grid .mono,.finish-grid h2,.steps,.finish-cta{grid-column:1 / -1}
+  .steps{grid-template-columns:1fr}
+  .steps li + li{padding-left:0;border-left:0;border-top:1px dashed var(--line)}
+}
+
+/* ==========================================================================
+   PIT WALL · novedades + marcas
+   ========================================================================== */
+.pitwall{padding-block:var(--section);background:var(--asphalt-2);color:var(--cream)}
+.pitwall-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:var(--gutter)}
+.panel{position:relative;padding:clamp(1.5rem,3vw,2.8rem)}
+.panel h2{font-size:var(--t-l);line-height:1;font-weight:330;font-variation-settings:"wdth" 120;letter-spacing:-.02em;margin:.8rem 0 1rem}
+.panel > p{color:var(--cream-soft);max-width:46ch}
+.panel .mono{color:var(--peach)}
+.panel--form{background:var(--asphalt);clip-path:polygon(0 0,calc(100% - 40px) 0,100% 40px,100% 100%,0 100%)}
+.panel--brands{border:1px solid color-mix(in oklch,var(--stone) 28%,transparent)}
+form{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem 1.2rem;margin-top:var(--s4)}
+.field{display:grid;gap:.4rem}
+.field.full{grid-column:1 / -1}
+.field label{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
+.field input{font:inherit;font-variation-settings:"wdth" 96;color:var(--cream);background:transparent;border:0;border-bottom:2px solid color-mix(in oklch,var(--stone) 45%,transparent);padding:.6rem 0;border-radius:0;transition:border-color .4s var(--ease)}
+.field input::placeholder{color:color-mix(in oklch,var(--stone) 55%,transparent)}
+.field input:hover{border-color:var(--stone)}
+.field input:focus{outline:none;border-color:var(--peach)}
+.field input:focus-visible{outline:none}
+.check{grid-column:1 / -1;display:flex;gap:.8rem;align-items:flex-start;font-size:.9rem;color:var(--cream-soft);line-height:1.45}
+.check input{appearance:none;flex:none;width:1.25rem;height:1.25rem;margin:.1rem 0 0;border:2px solid var(--stone);display:grid;place-items:center;cursor:pointer;transition:background .3s var(--ease)}
+.check input:checked{background:var(--peach);border-color:var(--peach)}
+.check input:checked::after{content:"";width:.55rem;height:.3rem;border-left:2px solid var(--logo);border-bottom:2px solid var(--logo);transform:rotate(-45deg) translate(1px,-1px)}
+.form-foot{grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:center;gap:1rem}
+.form-msg{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;color:var(--peach);min-height:1em}
+.tiers{margin-top:var(--s4);position:relative;padding:2.2rem 0 1rem}
+.tiers-track{position:relative;height:2px;background:color-mix(in oklch,var(--stone) 35%,transparent)}
+.tiers-track::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--sage),var(--peach))}
+.tiers-ends{display:flex;justify-content:space-between;margin-top:1rem;gap:1rem}
+.tiers-ends div{display:grid;gap:.3rem}
+.tiers-ends div:last-child{text-align:right}
+.tiers-ends strong{font-size:var(--t-m);font-variation-settings:"wdth" 70;font-weight:650;line-height:1.1}
+.tiers-ends .mono{color:var(--stone)}
+.tiers .pin{position:absolute;top:calc(2.2rem - 7px);width:16px;height:16px;transform:rotate(45deg);background:var(--asphalt-2);border:2px solid var(--sage)}
+.tiers .pin.r{right:0;border-color:var(--peach);background:var(--peach)}
+.mail{display:inline-flex;align-items:center;gap:.7rem;margin-top:var(--s4);font-size:var(--t-m);font-variation-settings:"wdth" 92;color:var(--cream);text-decoration:none;border-bottom:2px solid var(--peach);padding-bottom:.25rem;user-select:all}
+@media (max-width:900px){.pitwall-grid{grid-template-columns:1fr} form{grid-template-columns:1fr}}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.foot{position:relative;background:var(--logo);color:var(--stone);padding:var(--section) 0 calc(var(--gutter) + 3rem);overflow:hidden}
+.foot .logo{width:100%;color:var(--cream)}
+.foot-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem 2rem;margin-top:var(--s5);padding-top:1.2rem;border-top:1px solid color-mix(in oklch,var(--stone) 25%,transparent)}
+.foot a{text-decoration:none;color:var(--cream)}
+.foot a:hover{color:var(--peach)}
+.foot-quote{display:flex;justify-content:space-between;align-items:end;gap:var(--s3);margin-bottom:var(--s4);flex-wrap:wrap}
+.foot-quote p{font-size:var(--t-l);line-height:1.05;font-weight:300;font-variation-settings:"wdth" 120;color:var(--cream);max-width:20ch}
+
+/* reveal: estado inicial solo lo pone JS */
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="aora-word" viewBox="30 24 842 192"><path d="M 139.96 28.34 L 236.06 206.15 L 211.51 206.15 L 138.71 71.44 L 58.96 206.15 L 34.71 206.15 Z M 473.18 206.15 L 473.18 32.28 L 572.14 32.28 C 606.91 32.28 635.10 57.26 635.10 88.09 C 635.10 118.91 606.91 143.90 572.14 143.90 L 567.13 143.90 L 627.53 206.15 L 598.61 206.15 L 521.55 126.73 L 572.14 126.73 C 593.99 126.73 611.70 109.42 611.70 88.09 C 611.70 66.75 593.99 49.45 572.14 49.45 L 494.64 49.45 L 494.64 206.15 Z M 763.89 28.34 L 866.36 206.15 L 841.60 206.15 L 763.52 70.65 L 683.04 206.15 L 658.28 206.15 Z M 763.89 28.34"/><path fill-rule="evenodd" d="M 443.41 119.78 C 443.41 169.73 398.41 210.23 342.88 210.23 C 287.36 210.23 242.35 169.73 242.35 119.78 C 242.35 69.83 287.36 29.34 342.88 29.34 C 398.41 29.34 443.41 69.83 443.41 119.78 Z M 422.38 119.78 C 422.38 79.99 386.79 47.73 342.88 47.73 C 298.98 47.73 263.39 79.99 263.39 119.78 C 263.39 159.58 298.98 191.84 342.88 191.84 C 386.79 191.84 422.38 159.58 422.38 119.78 Z M 422.38 119.78"/></symbol>
+    <symbol id="aora-full" viewBox="24 24 860 244"><path d="M 139.96 28.34 L 236.06 206.15 L 211.51 206.15 L 138.71 71.44 L 58.96 206.15 L 34.71 206.15 Z M 473.18 206.15 L 473.18 32.28 L 572.14 32.28 C 606.91 32.28 635.10 57.26 635.10 88.09 C 635.10 118.91 606.91 143.90 572.14 143.90 L 567.13 143.90 L 627.53 206.15 L 598.61 206.15 L 521.55 126.73 L 572.14 126.73 C 593.99 126.73 611.70 109.42 611.70 88.09 C 611.70 66.75 593.99 49.45 572.14 49.45 L 494.64 49.45 L 494.64 206.15 Z M 763.89 28.34 L 866.36 206.15 L 841.60 206.15 L 763.52 70.65 L 683.04 206.15 L 658.28 206.15 Z M 763.89 28.34"/><path fill-rule="evenodd" d="M 443.41 119.78 C 443.41 169.73 398.41 210.23 342.88 210.23 C 287.36 210.23 242.35 169.73 242.35 119.78 C 242.35 69.83 287.36 29.34 342.88 29.34 C 398.41 29.34 443.41 69.83 443.41 119.78 Z M 422.38 119.78 C 422.38 79.99 386.79 47.73 342.88 47.73 C 298.98 47.73 263.39 79.99 263.39 119.78 C 263.39 159.58 298.98 191.84 342.88 191.84 C 386.79 191.84 422.38 159.58 422.38 119.78 Z M 422.38 119.78"/><path d="M 28.29 261.89 L 28.29 238.35 L 41.98 238.35 L 41.98 240.36 L 30.54 240.36 L 30.54 249.29 L 40.90 249.29 L 40.90 251.30 L 30.54 251.30 L 30.54 261.89 Z M 58.44 238.35 L 58.44 261.89 L 56.20 261.89 L 56.20 238.35 Z M 72.35 240.36 L 72.35 238.35 L 89.51 238.35 L 89.51 240.36 L 82.07 240.36 L 82.07 261.89 L 79.82 261.89 L 79.82 240.36 Z M 102.89 261.89 L 102.89 238.35 L 105.48 238.35 L 116.20 254.34 C 116.50 254.78 116.83 255.30 117.20 255.89 C 117.57 256.48 117.95 257.12 118.36 257.81 C 118.77 258.51 119.17 259.24 119.57 260.00 L 119.20 260.00 C 119.14 259.21 119.09 258.46 119.06 257.73 C 119.03 256.99 119.01 256.30 119.00 255.66 C 118.99 255.01 118.98 254.44 118.98 253.93 L 118.98 238.35 L 121.23 238.35 L 121.23 261.89 L 118.61 261.89 L 108.60 247.01 C 108.21 246.41 107.82 245.80 107.42 245.18 C 107.03 244.56 106.60 243.86 106.14 243.08 C 105.67 242.29 105.12 241.37 104.49 240.30 L 104.93 240.30 C 104.97 241.26 105.00 242.16 105.03 243.01 C 105.06 243.85 105.09 244.61 105.11 245.28 C 105.13 245.96 105.14 246.53 105.14 246.99 L 105.14 261.89 Z M 136.21 261.89 L 136.21 238.35 L 149.95 238.35 L 149.95 240.36 L 138.45 240.36 L 138.45 249.04 L 149.21 249.04 L 149.21 251.05 L 138.45 251.05 L 138.45 259.87 L 150.16 259.87 L 150.16 261.89 Z M 173.21 262.29 C 171.60 262.29 170.20 262.02 169.01 261.49 C 167.82 260.96 166.89 260.21 166.21 259.26 C 165.54 258.31 165.16 257.20 165.07 255.94 L 167.36 255.94 C 167.44 256.87 167.75 257.65 168.28 258.29 C 168.81 258.93 169.50 259.42 170.36 259.75 C 171.22 260.08 172.17 260.25 173.21 260.25 C 174.37 260.25 175.40 260.05 176.30 259.66 C 177.21 259.27 177.92 258.73 178.43 258.03 C 178.95 257.32 179.21 256.51 179.21 255.59 C 179.21 254.80 179.01 254.14 178.60 253.62 C 178.19 253.09 177.62 252.64 176.89 252.27 C 176.16 251.90 175.30 251.58 174.32 251.29 L 171.53 250.48 C 169.65 249.93 168.21 249.16 167.20 248.17 C 166.19 247.19 165.69 245.95 165.69 244.46 C 165.69 243.18 166.03 242.07 166.71 241.10 C 167.39 240.13 168.31 239.37 169.48 238.83 C 170.64 238.29 171.95 238.02 173.41 238.02 C 174.89 238.02 176.20 238.29 177.33 238.83 C 178.46 239.38 179.36 240.12 180.02 241.06 C 180.68 242.00 181.03 243.07 181.08 244.26 L 178.89 244.26 C 178.76 242.97 178.18 241.94 177.17 241.17 C 176.16 240.41 174.89 240.03 173.34 240.03 C 172.27 240.03 171.33 240.22 170.50 240.59 C 169.67 240.97 169.03 241.48 168.57 242.13 C 168.11 242.78 167.88 243.53 167.88 244.36 C 167.88 245.17 168.11 245.85 168.57 246.40 C 169.03 246.94 169.62 247.39 170.33 247.73 C 171.04 248.08 171.77 248.36 172.52 248.58 L 174.99 249.29 C 175.75 249.51 176.50 249.78 177.26 250.10 C 178.02 250.43 178.71 250.84 179.33 251.33 C 179.96 251.82 180.46 252.41 180.83 253.11 C 181.21 253.81 181.40 254.65 181.40 255.62 C 181.40 256.89 181.07 258.02 180.42 259.03 C 179.76 260.03 178.83 260.83 177.60 261.41 C 176.38 262 174.91 262.29 173.21 262.29 Z M 202.55 262.29 C 200.94 262.29 199.54 262.02 198.35 261.49 C 197.16 260.96 196.23 260.21 195.55 259.26 C 194.87 258.31 194.49 257.20 194.40 255.94 L 196.70 255.94 C 196.78 256.87 197.08 257.65 197.62 258.29 C 198.14 258.93 198.84 259.42 199.70 259.75 C 200.56 260.08 201.50 260.25 202.55 260.25 C 203.71 260.25 204.74 260.05 205.64 259.66 C 206.54 259.27 207.25 258.73 207.77 258.03 C 208.29 257.32 208.55 256.51 208.55 255.59 C 208.55 254.80 208.34 254.14 207.94 253.62 C 207.53 253.09 206.96 252.64 206.23 252.27 C 205.5 251.90 204.64 251.58 203.65 251.29 L 200.87 250.48 C 198.99 249.93 197.54 249.16 196.53 248.17 C 195.53 247.19 195.02 245.95 195.02 244.46 C 195.02 243.18 195.36 242.07 196.04 241.10 C 196.72 240.13 197.64 239.37 198.81 238.83 C 199.98 238.29 201.29 238.02 202.75 238.02 C 204.23 238.02 205.53 238.29 206.66 238.83 C 207.80 239.38 208.69 240.12 209.35 241.06 C 210.01 242.00 210.37 243.07 210.42 244.26 L 208.22 244.26 C 208.09 242.97 207.52 241.94 206.51 241.17 C 205.50 240.41 204.22 240.03 202.68 240.03 C 201.61 240.03 200.66 240.22 199.84 240.59 C 199.01 240.97 198.37 241.48 197.91 242.13 C 197.44 242.78 197.21 243.53 197.21 244.36 C 197.21 245.17 197.44 245.85 197.91 246.40 C 198.37 246.94 198.95 247.39 199.66 247.73 C 200.37 248.08 201.11 248.36 201.86 248.58 L 204.32 249.29 C 205.08 249.51 205.84 249.78 206.60 250.10 C 207.35 250.43 208.04 250.84 208.67 251.33 C 209.29 251.82 209.80 252.41 210.17 253.11 C 210.55 253.81 210.74 254.65 210.74 255.62 C 210.74 256.89 210.41 258.02 209.76 259.03 C 209.10 260.03 208.16 260.83 206.94 261.41 C 205.71 262 204.25 262.29 202.55 262.29 Z M 265.75 250.94 C 265.75 254.09 261.03 254.09 261.03 250.94 C 261.03 247.79 265.75 247.79 265.75 250.94 Z M 320.26 261.89 L 313.76 238.35 L 316.06 238.35 L 320.24 253.97 C 320.43 254.67 320.61 255.39 320.78 256.12 C 320.96 256.85 321.13 257.58 321.29 258.32 C 321.46 259.06 321.62 259.82 321.76 260.59 L 321.47 260.59 C 321.62 259.82 321.78 259.06 321.95 258.32 C 322.11 257.58 322.28 256.85 322.46 256.12 C 322.64 255.39 322.82 254.67 323.01 253.97 L 327.18 238.35 L 329.82 238.35 L 333.97 253.97 C 334.17 254.67 334.35 255.39 334.53 256.12 C 334.70 256.85 334.87 257.58 335.05 258.32 C 335.21 259.06 335.38 259.82 335.53 260.59 L 335.21 260.59 C 335.36 259.82 335.53 259.06 335.69 258.32 C 335.85 257.58 336.03 256.85 336.21 256.12 C 336.39 255.39 336.57 254.67 336.75 253.97 L 340.92 238.35 L 343.24 238.35 L 336.72 261.89 L 334.03 261.89 L 329.75 246.13 C 329.48 245.16 329.23 244.14 328.98 243.05 C 328.73 241.96 328.49 240.76 328.25 239.44 L 328.73 239.44 C 328.5 240.71 328.26 241.87 328.03 242.93 C 327.79 244 327.53 245.06 327.24 246.13 L 322.97 261.89 Z M 357.66 261.89 L 357.66 238.35 L 371.40 238.35 L 371.40 240.36 L 359.90 240.36 L 359.90 249.04 L 370.67 249.04 L 370.67 251.05 L 359.90 251.05 L 359.90 259.87 L 371.61 259.87 L 371.61 261.89 Z M 387.97 261.89 L 387.97 238.35 L 390.22 238.35 L 390.22 259.87 L 401.41 259.87 L 401.41 261.89 Z M 415.87 261.89 L 415.87 238.35 L 418.13 238.35 L 418.13 259.87 L 429.31 259.87 L 429.31 261.89 Z M 443.48 261.89 L 443.48 238.35 L 446.07 238.35 L 456.78 254.34 C 457.08 254.78 457.42 255.30 457.79 255.89 C 458.16 256.48 458.54 257.12 458.95 257.81 C 459.35 258.51 459.76 259.24 460.16 260.00 L 459.79 260.00 C 459.73 259.21 459.68 258.46 459.65 257.73 C 459.62 256.99 459.60 256.30 459.58 255.66 C 459.57 255.01 459.57 254.44 459.57 253.93 L 459.57 238.35 L 461.81 238.35 L 461.81 261.89 L 459.20 261.89 L 449.19 247.01 C 448.80 246.41 448.41 245.80 448.01 245.18 C 447.62 244.56 447.19 243.86 446.73 243.08 C 446.26 242.29 445.71 241.37 445.08 240.30 L 445.52 240.30 C 445.55 241.26 445.59 242.16 445.62 243.01 C 445.65 243.85 445.67 244.61 445.70 245.28 C 445.72 245.96 445.73 246.53 445.73 246.99 L 445.73 261.89 Z M 478.22 261.89 L 478.22 238.35 L 491.97 238.35 L 491.97 240.36 L 480.46 240.36 L 480.46 249.04 L 491.23 249.04 L 491.23 251.05 L 480.46 251.05 L 480.46 259.87 L 492.18 259.87 L 492.18 261.89 Z M 515.94 262.29 C 514.33 262.29 512.94 262.02 511.75 261.49 C 510.56 260.96 509.62 260.21 508.95 259.26 C 508.27 258.31 507.89 257.20 507.80 255.94 L 510.10 255.94 C 510.17 256.87 510.48 257.65 511.01 258.29 C 511.54 258.93 512.24 259.42 513.09 259.75 C 513.95 260.08 514.90 260.25 515.94 260.25 C 517.10 260.25 518.14 260.05 519.04 259.66 C 519.94 259.27 520.65 258.73 521.17 258.03 C 521.69 257.32 521.94 256.51 521.94 255.59 C 521.94 254.80 521.74 254.14 521.33 253.62 C 520.93 253.09 520.36 252.64 519.62 252.27 C 518.89 251.90 518.03 251.58 517.05 251.29 L 514.26 250.48 C 512.39 249.93 510.94 249.16 509.93 248.17 C 508.92 247.19 508.42 245.95 508.42 244.46 C 508.42 243.18 508.76 242.07 509.44 241.10 C 510.12 240.13 511.04 239.37 512.21 238.83 C 513.37 238.29 514.68 238.02 516.14 238.02 C 517.62 238.02 518.93 238.29 520.06 238.83 C 521.19 239.38 522.09 240.12 522.75 241.06 C 523.41 242.00 523.77 243.07 523.82 244.26 L 521.62 244.26 C 521.49 242.97 520.92 241.94 519.91 241.17 C 518.89 240.41 517.62 240.03 516.08 240.03 C 515.01 240.03 514.06 240.22 513.23 240.59 C 512.41 240.97 511.76 241.48 511.30 242.13 C 510.84 242.78 510.61 243.53 510.61 244.36 C 510.61 245.17 510.84 245.85 511.30 246.40 C 511.76 246.94 512.35 247.39 513.06 247.73 C 513.77 248.08 514.51 248.36 515.26 248.58 L 517.72 249.29 C 518.48 249.51 519.24 249.78 520 250.10 C 520.75 250.43 521.44 250.84 522.07 251.33 C 522.69 251.82 523.19 252.41 523.57 253.11 C 523.95 253.81 524.14 254.65 524.14 255.62 C 524.14 256.89 523.81 258.02 523.16 259.03 C 522.50 260.03 521.56 260.83 520.33 261.41 C 519.11 262 517.65 262.29 515.94 262.29 Z M 546.71 262.29 C 545.10 262.29 543.70 262.02 542.51 261.49 C 541.33 260.96 540.39 260.21 539.71 259.26 C 539.04 258.31 538.66 257.20 538.57 255.94 L 540.86 255.94 C 540.94 256.87 541.25 257.65 541.78 258.29 C 542.31 258.93 543.00 259.42 543.86 259.75 C 544.72 260.08 545.67 260.25 546.71 260.25 C 547.87 260.25 548.90 260.05 549.80 259.66 C 550.71 259.27 551.42 258.73 551.94 258.03 C 552.45 257.32 552.71 256.51 552.71 255.59 C 552.71 254.80 552.51 254.14 552.10 253.62 C 551.69 253.09 551.12 252.64 550.39 252.27 C 549.66 251.90 548.80 251.58 547.82 251.29 L 545.03 250.48 C 543.15 249.93 541.71 249.16 540.70 248.17 C 539.69 247.19 539.19 245.95 539.19 244.46 C 539.19 243.18 539.53 242.07 540.21 241.10 C 540.89 240.13 541.81 239.37 542.98 238.83 C 544.14 238.29 545.45 238.02 546.91 238.02 C 548.39 238.02 549.70 238.29 550.83 238.83 C 551.96 239.38 552.86 240.12 553.52 241.06 C 554.18 242.00 554.53 243.07 554.58 244.26 L 552.39 244.26 C 552.26 242.97 551.69 241.94 550.67 241.17 C 549.66 240.41 548.39 240.03 546.85 240.03 C 545.78 240.03 544.83 240.22 544.00 240.59 C 543.18 240.97 542.53 241.48 542.07 242.13 C 541.61 242.78 541.38 243.53 541.38 244.36 C 541.38 245.17 541.61 245.85 542.07 246.40 C 542.53 246.94 543.12 247.39 543.83 247.73 C 544.54 248.08 545.27 248.36 546.02 248.58 L 548.49 249.29 C 549.25 249.51 550.00 249.78 550.76 250.10 C 551.52 250.43 552.21 250.84 552.83 251.33 C 553.46 251.82 553.96 252.41 554.33 253.11 C 554.71 253.81 554.90 254.65 554.90 255.62 C 554.90 256.89 554.58 258.02 553.92 259.03 C 553.26 260.03 552.33 260.83 551.10 261.41 C 549.88 262 548.41 262.29 546.71 262.29 Z M 608.48 250.94 C 608.48 254.09 603.76 254.09 603.76 250.94 C 603.76 247.79 608.48 247.79 608.48 250.94 Z M 658.66 261.89 L 658.66 238.35 L 672.36 238.35 L 672.36 240.36 L 660.91 240.36 L 660.91 249.29 L 671.27 249.29 L 671.27 251.30 L 660.91 251.30 L 660.91 261.89 Z M 688.23 261.89 L 688.23 238.35 L 701.97 238.35 L 701.97 240.36 L 690.47 240.36 L 690.47 249.04 L 701.23 249.04 L 701.23 251.05 L 690.47 251.05 L 690.47 259.87 L 702.18 259.87 L 702.18 261.89 Z M 724.87 262.29 C 723.26 262.29 721.87 262.02 720.68 261.49 C 719.49 260.96 718.56 260.21 717.88 259.26 C 717.20 258.31 716.82 257.20 716.73 255.94 L 719.03 255.94 C 719.11 256.87 719.41 257.65 719.94 258.29 C 720.48 258.93 721.17 259.42 722.03 259.75 C 722.89 260.08 723.83 260.25 724.87 260.25 C 726.03 260.25 727.07 260.05 727.97 259.66 C 728.87 259.27 729.58 258.73 730.10 258.03 C 730.62 257.32 730.88 256.51 730.88 255.59 C 730.88 254.80 730.67 254.14 730.26 253.62 C 729.86 253.09 729.29 252.64 728.56 252.27 C 727.82 251.90 726.96 251.58 725.98 251.29 L 723.20 250.48 C 721.32 249.93 719.87 249.16 718.86 248.17 C 717.85 247.19 717.35 245.95 717.35 244.46 C 717.35 243.18 717.69 242.07 718.37 241.10 C 719.05 240.13 719.97 239.37 721.14 238.83 C 722.30 238.29 723.62 238.02 725.07 238.02 C 726.55 238.02 727.86 238.29 729 238.83 C 730.13 239.38 731.02 240.12 731.68 241.06 C 732.34 242.00 732.70 243.07 732.75 244.26 L 730.55 244.26 C 730.42 242.97 729.85 241.94 728.84 241.17 C 727.83 240.41 726.55 240.03 725.01 240.03 C 723.94 240.03 722.99 240.22 722.17 240.59 C 721.34 240.97 720.70 241.48 720.24 242.13 C 719.77 242.78 719.54 243.53 719.54 244.36 C 719.54 245.17 719.77 245.85 720.23 246.40 C 720.69 246.94 721.28 247.39 721.99 247.73 C 722.71 248.08 723.44 248.36 724.19 248.58 L 726.65 249.29 C 727.41 249.51 728.17 249.78 728.92 250.10 C 729.68 250.43 730.37 250.84 731.00 251.33 C 731.62 251.82 732.12 252.41 732.50 253.11 C 732.88 253.81 733.07 254.65 733.07 255.62 C 733.07 256.89 732.74 258.02 732.08 259.03 C 731.43 260.03 730.49 260.83 729.27 261.41 C 728.05 262 726.58 262.29 724.87 262.29 Z M 747.09 240.36 L 747.09 238.35 L 764.25 238.35 L 764.25 240.36 L 756.80 240.36 L 756.80 261.89 L 754.55 261.89 L 754.55 240.36 Z M 782.55 238.35 L 782.55 261.89 L 780.30 261.89 L 780.30 238.35 Z M 806.61 261.89 L 797.91 238.35 L 800.27 238.35 L 805.86 253.73 C 806.16 254.55 806.50 255.54 806.89 256.71 C 807.27 257.89 807.71 259.27 808.19 260.85 L 807.70 260.85 C 808.18 259.23 808.62 257.84 809.00 256.69 C 809.39 255.53 809.72 254.55 810.01 253.73 L 815.51 238.35 L 817.89 238.35 L 809.25 261.89 Z M 830.46 261.89 L 839.09 238.35 L 841.74 238.35 L 850.45 261.89 L 848.08 261.89 L 842.48 246.50 C 842.17 245.64 841.83 244.64 841.46 243.50 C 841.08 242.36 840.66 240.98 840.17 239.37 L 840.64 239.37 C 840.16 241 839.73 242.39 839.35 243.55 C 838.96 244.70 838.63 245.68 838.34 246.50 L 832.85 261.89 Z M 834.48 254.89 L 834.48 252.90 L 846.43 252.90 L 846.43 254.89 Z M 865.58 261.89 L 865.58 238.35 L 867.83 238.35 L 867.83 259.87 L 879.01 259.87 L 879.01 261.89 Z M 865.58 261.89"/></symbol>
+    <symbol id="chev" viewBox="0 0 16 16"><path d="M5 2.5 L11.5 8 L5 13.5"/></symbol>
+  </defs>
+</svg>
+
+<nav class="dirbar" aria-label="Dirección de diseño">
+  <span>Dirección 3 · <b>Pista</b></span>
+  <a href="../index.html">← Todas las direcciones</a>
+</nav>
+
+<nav class="lap" aria-label="Vuelta">
+  <ol>
+    <i class="lap-fill" aria-hidden="true"></i>
+    <li><a href="#salida" data-lap><span>Salida</span></a></li>
+    <li><a href="#trazado" data-lap><span>Trazado</span></a></li>
+    <li><a href="#grilla" data-lap><span>Tu carril</span></a></li>
+    <li><a href="#sede" data-lap><span>Sede</span></a></li>
+    <li><a href="#meta" data-lap><span>Meta · Entradas</span></a></li>
+    <li><a href="#pits" data-lap><span>Novedades · Marcas</span></a></li>
+  </ol>
+</nav>
+
+<main>
+<!-- ============ SALIDA ============ -->
+<header class="hero" id="salida">
+  <div class="hero-media" data-hero-media>
+    <div class="ph"><img src="../fotos/arco-entrada.jpg" alt="Arco de salida sobre la recta del autódromo, con atletas en los rigs y público a ambos lados." fetchpriority="high" decoding="async"></div>
+  </div>
+  <svg class="hero-lanes" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+    <path class="l" d="M 596 0 L 855 900" vector-effect="non-scaling-stroke"/>
+    <path class="l dash" d="M 548 0 L 807 900" vector-effect="non-scaling-stroke"/>
+    <path class="l dash" d="M 500 0 L 759 900" vector-effect="non-scaling-stroke"/>
+    <path class="fin" d="M 634 0 L 893 900" vector-effect="non-scaling-stroke" data-hero-fin/>
+  </svg>
+
+  <div class="hero-copy">
+    <div class="hero-top">
+      <span class="mono tick">Fitness · Wellness · Community · Culture</span>
+      <span class="mono">Primera edición · Febrero 2027 · 2 días</span>
+    </div>
+    <div>
+      <h1 class="hero-h">
+        <span class="line"><span class="t" data-hero-line>El momento</span></span>
+        <span class="line"><span class="row" data-hero-line><span class="t">es</span><svg class="logo" viewBox="30 24 842 192" role="img" aria-label="AORA"><use href="#aora-word" x="30" y="24" width="842" height="192"/></svg></span></span>
+      </h1>
+      <p class="hero-sub" data-hero-fade>2 días para moverte, cuidarte y vivir mejor. En la pista del Autódromo de Tocancipá.</p>
+      <div class="hero-cta" data-hero-fade>
+        <a class="btn" href="https://kobaii.co" target="_blank" rel="noopener">Crear mi cuenta en KOBAII<span class="btn-ico"><svg class="chev"><use href="#chev"/></svg></span></a>
+        <a class="btn btn--ghost" href="#trazado">Ver el trazado<span class="btn-ico"><svg class="chev" style="transform:rotate(90deg)"><use href="#chev"/></svg></span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-hud mono" data-hero-fade>
+    <span>Autódromo de Tocancipá · <b>Cundinamarca</b></span>
+    <span>Vuelta de reconocimiento · 3 sectores</span>
+    <a class="hud-go" href="#trazado">Sector 1 · Move →</a>
+  </div>
+</header>
+
+<!-- ============ MANIFIESTO ============ -->
+<section class="manifesto" aria-labelledby="m-h">
+  <div class="wrap manifesto-grid">
+    <p class="label mono tick" data-rv>La largada</p>
+    <h2 id="m-h" data-rv>El bienestar dejó de ser una rutina. Ahora es <em>una cultura.</em></h2>
+    <p class="body" data-rv>Un mismo lugar para el movimiento, la comunidad, la salud, la naturaleza, el aprendizaje y las experiencias que inspiran. La gente ya no solo quiere hacer ejercicio: quiere participar, competir y pertenecer.</p>
+    <div class="aside" data-rv>
+      <p>Más que un evento, un movimiento.</p>
+    </div>
+    <ul class="axes" data-rv>
+      <li><strong>Fitness</strong></li>
+      <li><strong>Wellness</strong></li>
+      <li><strong>Community</strong></li>
+      <li><strong>Culture</strong></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ TRAZADO ============ -->
+<section class="circuit" id="trazado" aria-labelledby="c-h">
+  <div class="circuit-pin">
+    <div class="circuit-head">
+      <h2 id="c-h">Una vuelta, <em>tres sectores.</em></h2>
+      <p class="mono">Trazado del festival<br>sobre el Autódromo de Tocancipá</p>
+    </div>
+
+    <figure class="map">
+      <svg viewBox="0 0 1800 1311" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Vista aérea del autódromo con el trazado del festival dividido en tres sectores">
+        <defs>
+          <linearGradient id="mapShade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1c201e" stop-opacity=".55"/>
+            <stop offset=".45" stop-color="#1c201e" stop-opacity="0"/>
+            <stop offset="1" stop-color="#1c201e" stop-opacity=".5"/>
+          </linearGradient>
+          <clipPath id="mapClip"><path d="M 90 0 H 1800 V 1221 L 1710 1311 H 0 V 90 Z"/></clipPath>
+        </defs>
+        <g clip-path="url(#mapClip)">
+          <image class="base-img" href="../fotos/autodromo.jpg" x="0" y="0" width="1800" height="1311" preserveAspectRatio="xMidYMid slice"/>
+          <rect class="tint" width="1800" height="1311"/>
+          <rect class="shade" width="1800" height="1311"/>
+        </g>
+        <path id="route-d" class="route-base" d="M 300 1075 C 700 1160 1000 1238 1250 1256 C 1500 1274 1700 1232 1765 1080 C 1810 950 1792 700 1766 560 C 1740 430 1620 342 1440 302 C 1300 272 1230 240 1120 190 C 960 120 760 52 620 70 C 540 82 556 150 640 205 C 760 290 920 420 1060 590 C 1130 680 1118 780 1106 860 C 1092 1000 1150 1092 1282 1096 C 1402 1098 1432 1000 1392 922 C 1344 832 1180 812 1000 846 C 800 884 600 990 300 1075"/>
+        <path class="route-dash" d="M 300 1075 C 700 1160 1000 1238 1250 1256 C 1500 1274 1700 1232 1765 1080 C 1810 950 1792 700 1766 560 C 1740 430 1620 342 1440 302 C 1300 272 1230 240 1120 190 C 960 120 760 52 620 70 C 540 82 556 150 640 205 C 760 290 920 420 1060 590 C 1130 680 1118 780 1106 860 C 1092 1000 1150 1092 1282 1096 C 1402 1098 1432 1000 1392 922 C 1344 832 1180 812 1000 846 C 800 884 600 990 300 1075"/>
+        <path id="route" class="route-draw" d="M 300 1075 C 700 1160 1000 1238 1250 1256 C 1500 1274 1700 1232 1765 1080 C 1810 950 1792 700 1766 560 C 1740 430 1620 342 1440 302 C 1300 272 1230 240 1120 190 C 960 120 760 52 620 70 C 540 82 556 150 640 205 C 760 290 920 420 1060 590 C 1130 680 1118 780 1106 860 C 1092 1000 1150 1092 1282 1096 C 1402 1098 1432 1000 1392 922 C 1344 832 1180 812 1000 846 C 800 884 600 990 300 1075"/>
+        <g id="gates"></g>
+        <g class="marker" id="marker" transform="translate(300 1075)">
+          <circle class="halo" r="56"/>
+          <circle class="ring" r="30"/>
+          <circle class="core" r="12"/>
+        </g>
+      </svg>
+      <figcaption class="map-cap mono"><span>Trazado ilustrativo</span><span>Salida · S1 · S2 · S3 · Meta</span></figcaption>
+    </figure>
+
+    <div class="sectors">
+      <article class="sector is-on" data-sector="0">
+        <p class="sector-tag mono"><i></i>Sector 1 · Move</p>
+        <h3>La recta es para moverte.</h3>
+        <div class="ph"><img class="par-off" src="../fotos/hybrid-pista.jpg" alt="Atletas en los rigs del Hybrid Challenge frente a la tribuna." loading="lazy" decoding="async"></div>
+        <ul>
+          <li><svg class="chev"><use href="#chev"/></svg><span>Run 3K AORA<small>Tu primera carrera o tu mejor marca.</small></span></li>
+          <li><svg class="chev"><use href="#chev"/></svg><span>AORA Hybrid Challenge<small>Fuerza y resistencia, en formato competencia.</small></span></li>
+          <li><svg class="chev"><use href="#chev"/></svg><span>2K Kids<small>La pista también es de niñas y niños.</small></span></li>
+          <li><svg class="chev"><use href="#chev"/></svg><span>Calistenia para principiantes</span></li>
+        </ul>
+      </article>
+      <article class="sector" data-sector="1">
+        <p class="sector-tag mono"><i></i>Sector 2 · Connect</p>
+        <h3>Baja la velocidad. Escucha el cuerpo.</h3>
+        <div class="ph"><img src="../fotos/ice-recta.jpg" alt="Filas de tinas de hielo sobre la recta, vistas desde lo alto." loading="lazy" decoding="async"></div>
+        <ul>
+          <li><svg class="chev"><use href="#chev"/></svg><span>Yoga, pilates y meditación</span></li>
+          <li><svg class="chev"><use href="#chev"/></svg><span>Recovery<small>Ice immersion, movilidad y recovery station.</small></span></li>
+          <li><svg class="chev"><use href="#chev"/></svg><span>Talks y workshops<small>Performance, nutrición, hábitos y wellness.</small></span></li>
+        </ul>
+      </article>
+      <article class="sector" data-sector="2">
+        <p class="sector-tag mono"><i></i>Sector 3 · Belong</p>
+        <h3>La vuelta termina en comunidad.</h3>
+        <div class="ph"><img src="../fotos/dj-afrohouse.jpg" alt="Tarima de madera con DJ y público bailando al atardecer." loading="lazy" decoding="async"></div>
+        <ul>
+          <li><svg class="chev"><use href="#chev"/></svg><span>Coffee party y networking</span></li>
+          <li><svg class="chev"><use href="#chev"/></svg><span>Música en vivo, DJs y arte</span></li>
+          <li><svg class="chev"><use href="#chev"/></svg><span>Gastronomía saludable</span></li>
+          <li><svg class="chev"><use href="#chev"/></svg><span>Brand village</span></li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="hud mono" aria-hidden="true">
+      <span>Sector <b data-hud-n>1</b> / 3 · <span data-hud-name>Move</span></span>
+      <div class="hud-bar"><i data-hud-bar></i><s style="left:34%"></s><s style="left:67%"></s></div>
+      <span class="hud-r">Salida → Meta</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GRILLA DE SALIDA ============ -->
+<section class="grid-sec" id="grilla" aria-labelledby="g-h">
+  <div class="wrap">
+    <div class="grid-head">
+      <p class="mono tick" data-rv>Grilla de salida</p>
+      <h2 id="g-h" data-rv>Cada quien arranca desde su carril.</h2>
+      <p data-rv>Busca tu perfil. A la derecha, la experiencia que te espera en la pista.</p>
+    </div>
+    <ol class="starting">
+      <li class="slot hl" data-rv><span class="who">Atleta</span><span class="what">Hybrid Challenge<svg class="chev"><use href="#chev"/></svg></span></li>
+      <li class="slot" data-rv><span class="who">Principiante</span><span class="what">Run 3K<svg class="chev"><use href="#chev"/></svg></span></li>
+      <li class="slot" data-rv><span class="who">Niños y niñas</span><span class="what">2K Kids<svg class="chev"><use href="#chev"/></svg></span></li>
+      <li class="slot" data-rv><span class="who">Wellness lover</span><span class="what">Yoga + Pilates<svg class="chev"><use href="#chev"/></svg></span></li>
+      <li class="slot" data-rv><span class="who">Fitness lover</span><span class="what">Calistenia<svg class="chev"><use href="#chev"/></svg></span></li>
+      <li class="slot" data-rv><span class="who">Mente curiosa</span><span class="what">Stage · Talks<svg class="chev"><use href="#chev"/></svg></span></li>
+      <li class="slot" data-rv><span class="who">Recovery seeker</span><span class="what">Recovery + Ice<svg class="chev"><use href="#chev"/></svg></span></li>
+      <li class="slot" data-rv><span class="who">Social</span><span class="what">Coffee party<svg class="chev"><use href="#chev"/></svg></span></li>
+      <li class="slot hl" data-rv><span class="who">Explorador de marcas</span><span class="what">Brand village<svg class="chev"><use href="#chev"/></svg></span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ PADDOCK ============ -->
+<section class="paddock" aria-labelledby="p-h">
+  <div class="paddock-lines" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="paddock-head">
+      <h2 id="p-h" data-rv>Entre vuelta y vuelta, el paddock.</h2>
+      <p class="mono tick" data-rv>Moverte · Cuidarte · Vivir mejor</p>
+    </div>
+    <div class="stack">
+      <figure class="st-a"><div class="ph cut-r" data-depth="-6"><img class="par" src="../fotos/rig-barra.jpg" alt="Atletas levantando barra en los rigs." loading="lazy" decoding="async"></div><figcaption class="mono">Fuerza · Hybrid</figcaption></figure>
+      <figure class="st-b" data-float="-40"><div class="ph cut-s"><img src="../fotos/yoga.jpg" alt="Clase de yoga sobre tarima de madera al atardecer." loading="lazy" decoding="async"></div><figcaption class="mono">Yoga · Atardecer</figcaption></figure>
+      <figure class="st-c" data-float="-70"><div class="ph cut-s"><img src="../fotos/meditacion.jpg" alt="Meditación entre eucaliptos con neblina." loading="lazy" decoding="async"></div><figcaption class="mono">Meditación</figcaption></figure>
+      <figure class="st-d" data-float="-20"><div class="ph cut-s"><img src="../fotos/zona-wellness.jpg" alt="Zona wellness con tinas, mats y público." loading="lazy" decoding="async"></div><figcaption class="mono">Zona wellness</figcaption></figure>
+      <figure class="st-e" data-float="-50"><div class="ph cut-s"><img src="../fotos/picnic.jpg" alt="Amigos compartiendo bowls en el césped." loading="lazy" decoding="async"></div><figcaption class="mono">Gastronomía</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEDE ============ -->
+<section class="venue" id="sede" aria-labelledby="v-h">
+  <div class="ph"><img class="par" src="../fotos/autodromo-amanecer.jpg" alt="El autódromo al amanecer, con luces encendidas y montañas al fondo." loading="lazy" decoding="async"></div>
+  <div class="venue-card" data-rv>
+    <div>
+      <p class="mono tick" style="color:var(--peach)">La sede</p>
+      <h2 id="v-h" style="margin-top:1rem">Un escenario icónico en el corazón de Colombia.</h2>
+    </div>
+    <div class="meta">
+      <dl>
+        <div><dt class="mono">Autódromo</dt><dd>Autódromo de Tocancipá</dd></div>
+        <div><dt class="mono">Tocancipá · Cundinamarca</dt><dd>A las afueras de Bogotá. La recta, los pits y las curvas se vuelven escenario durante 2 días.</dd></div>
+        <div><dt class="mono">Cuándo</dt><dd>Febrero 2027</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============ META · ENTRADAS ============ -->
+<section class="finish-sec" id="meta" aria-labelledby="f-h">
+  <div class="finish-band" aria-hidden="true"></div>
+  <div class="wrap finish-grid">
+    <p class="mono tick" data-rv>Línea de meta · Entradas</p>
+    <h2 id="f-h" data-rv>La venta aún no abre. <strong>Tu lugar en la fila, sí.</strong></h2>
+    <ol class="steps">
+      <li data-rv><span class="n">1</span><h3>Crea tu cuenta en kobaii.co</h3><p>KOBAII es la tiquetera oficial del festival.</p></li>
+      <li data-rv><span class="n">2</span><h3>Quedas en la lista de espera</h3><p>Te avisamos cuando abra el lanzamiento oficial.</p></li>
+      <li data-rv><span class="n">3</span><h3>Beneficios sorpresa</h3><p>Se anuncian en las próximas semanas.</p></li>
+    </ol>
+    <div class="finish-cta" data-rv>
+      <a class="btn btn--xl" href="https://kobaii.co" target="_blank" rel="noopener">Crear mi cuenta en KOBAII<span class="btn-ico"><svg class="chev"><use href="#chev"/></svg></span></a>
+      <p>Se abre kobaii.co en una pestaña nueva.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PIT WALL ============ -->
+<section class="pitwall" id="pits" aria-label="Novedades y marcas">
+  <div class="wrap pitwall-grid">
+    <div class="panel panel--form" data-rv>
+      <p class="mono tick">Radio de equipo</p>
+      <h2>Lista de novedades</h2>
+      <p>Programa, lanzamiento de entradas y beneficios del festival. Solo lo importante, cuando pase.</p>
+      <form id="news" novalidate>
+        <div class="field"><label for="f-n">Nombre</label><input id="f-n" name="nombre" autocomplete="name" placeholder="Cómo te llamas" required></div>
+        <div class="field"><label for="f-e">Correo</label><input id="f-e" name="correo" type="email" autocomplete="email" placeholder="tu@correo.com" required></div>
+        <div class="field full"><label for="f-c">Ciudad (opcional)</label><input id="f-c" name="ciudad" autocomplete="address-level2" placeholder="Desde dónde llegas"></div>
+        <label class="check"><input type="checkbox" name="autorizo">Autorizo el tratamiento de mis datos personales para recibir novedades del festival.</label>
+        <div class="form-foot">
+          <button class="btn btn--signal" type="submit">Quiero las novedades<span class="btn-ico"><svg class="chev"><use href="#chev"/></svg></span></button>
+          <p class="form-msg" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+    <div class="panel panel--brands" data-rv>
+      <p class="mono tick">Marcas en pista</p>
+      <h2>Tu marca, en la primera edición.</h2>
+      <p>Paquetes de patrocinio para todo tipo de presencia: desde una activación en el brand village hasta presentar el festival.</p>
+      <div class="tiers" aria-label="Rango de paquetes">
+        <span class="pin" style="left:0"></span><span class="pin r"></span>
+        <div class="tiers-track"></div>
+        <div class="tiers-ends">
+          <div><span class="mono">Desde</span><strong>Activation</strong></div>
+          <div><span class="mono">Hasta</span><strong>Presenting Partner</strong></div>
+        </div>
+      </div>
+      <a class="mail" href="mailto:valeri@aorawellness.com">valeri@aorawellness.com</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-quote">
+      <p>Nos vemos en la salida.</p>
+      <a class="mono" href="https://instagram.com/aorawellnessfest" target="_blank" rel="noopener">Instagram · @aorawellnessfest ↗</a>
+    </div>
+    <svg class="logo" viewBox="24 24 860 244" role="img" aria-label="AORA Fitness Wellness Festival"><use href="#aora-full" x="24" y="24" width="860" height="244"/></svg>
+    <div class="foot-row mono">
+      <span>AORA WELLNESS SAS · NIT 901.994.619-1 · Bogotá D.C.</span>
+      <span>Imágenes ilustrativas.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  // Formulario: solo UI
+  var form=document.getElementById('news');
+  form.addEventListener('submit',function(e){e.preventDefault();form.querySelector('.form-msg').textContent='Vista previa: aún no envía datos';});
+
+  // Puertas de sector y meta sobre el trazado (sin animación: siempre se dibujan)
+  var NS='http://www.w3.org/2000/svg';
+  var route=document.getElementById('route');
+  var L=route.getTotalLength();
+  var GATES=[{f:0,label:'META'},{f:.34,label:'S2'},{f:.67,label:'S3'}];
+  var gatesG=document.getElementById('gates');
+  function ptAt(f){var a=route.getPointAtLength(Math.max(0,Math.min(L,f*L)));var b=route.getPointAtLength(Math.max(0,Math.min(L,f*L+2)));return {x:a.x,y:a.y,ang:Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI};}
+  var gateEls=GATES.map(function(g,i){
+    var p=ptAt(g.f||0.0001), grp=document.createElementNS(NS,'g');
+    grp.setAttribute('class','gate'+(i===0?' finish':''));
+    grp.setAttribute('transform','translate('+p.x.toFixed(1)+' '+p.y.toFixed(1)+')');
+    var ln=document.createElementNS(NS,'line');
+    var r=(p.ang+90)*Math.PI/180;
+    ln.setAttribute('x1',(-Math.cos(r)*40).toFixed(1));ln.setAttribute('y1',(-Math.sin(r)*40).toFixed(1));
+    ln.setAttribute('x2',(Math.cos(r)*40).toFixed(1));ln.setAttribute('y2',(Math.sin(r)*40).toFixed(1));
+    var w=g.label.length*22+28, ox=i===0?-w/2:(p.x>1500?-w-30:24), oy=i===0?56:-74;
+    var rc=document.createElementNS(NS,'rect');rc.setAttribute('x',ox);rc.setAttribute('y',oy);rc.setAttribute('width',w);rc.setAttribute('height',46);
+    var tx=document.createElementNS(NS,'text');tx.setAttribute('x',ox+14);tx.setAttribute('y',oy+33);tx.textContent=g.label;
+    grp.appendChild(ln);grp.appendChild(rc);grp.appendChild(tx);gatesG.appendChild(grp);return grp;
+  });
+
+  if(!window.gsap||!window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce) return;
+
+  var ease='expo.out';
+  // Salida
+  var tl=gsap.timeline({defaults:{ease:ease}});
+  var mobile=window.matchMedia('(max-width:900px)').matches;
+  if(!mobile) tl.from('[data-hero-media]',{clipPath:'polygon(100% 0,100% 0,100% 100%,100% 100%)',duration:1.5,ease:'power4.inOut'},0);
+  tl.from('[data-hero-media] img',{scale:1.18,duration:2.2},0)
+    .from('[data-hero-line]',{yPercent:110,duration:1.3,stagger:.12},.35)
+    .from('[data-hero-fin]',{attr:{d:'M 634 0 L 634 0'},duration:1.2,ease:'power3.inOut'},.6)
+    .from('[data-hero-fade]',{y:24,opacity:0,duration:1,stagger:.1},.8);
+
+  // Entradas al viewport
+  gsap.utils.toArray('[data-rv]').forEach(function(el){
+    gsap.from(el,{y:44,opacity:0,duration:1.1,ease:ease,scrollTrigger:{trigger:el,start:'top 90%',once:true}});
+  });
+
+  // Parallax interno en fotos
+  gsap.utils.toArray('.par').forEach(function(img){
+    gsap.fromTo(img,{yPercent:-6},{yPercent:6,ease:'none',scrollTrigger:{trigger:img.closest('figure,section'),start:'top bottom',end:'bottom top',scrub:true}});
+  });
+  // Capas del paddock a distintas profundidades
+  gsap.utils.toArray('[data-float]').forEach(function(el){
+    gsap.to(el,{y:parseFloat(el.dataset.float),ease:'none',scrollTrigger:{trigger:'.stack',start:'top bottom',end:'bottom top',scrub:true}});
+  });
+
+  // ===== Momento principal: el trazado se dibuja con el scroll =====
+  var root=document.documentElement;
+  root.classList.add('pin-on');
+  var marker=document.getElementById('marker');
+  var sectors=[].slice.call(document.querySelectorAll('.sector'));
+  var hudN=document.querySelector('[data-hud-n]'),hudName=document.querySelector('[data-hud-name]'),hudBar=document.querySelector('[data-hud-bar]');
+  var names=['Move','Connect','Belong'];
+  route.style.strokeDasharray=L+' '+L;
+  route.style.strokeDashoffset=L;
+  var current=-1;
+  function render(p){
+    route.style.strokeDashoffset=(L*(1-p)).toFixed(1);
+    var pt=route.getPointAtLength(Math.min(L,p*L));
+    marker.setAttribute('transform','translate('+pt.x.toFixed(1)+' '+pt.y.toFixed(1)+')');
+    hudBar.style.transform='scaleX('+p.toFixed(4)+')';
+    var s=p<.34?0:(p<.67?1:2);
+    gateEls[1].classList.toggle('on',p>=.34);gateEls[2].classList.toggle('on',p>=.67);gateEls[0].classList.toggle('on',p>=.995);
+    if(s!==current){current=s;sectors.forEach(function(el,i){el.classList.toggle('is-on',i===s);});hudN.textContent=s+1;hudName.textContent=names[s];}
+  }
+  render(0);
+  var proxy={p:0};
+  gsap.to(proxy,{p:1,ease:'none',onUpdate:function(){render(proxy.p);},
+    scrollTrigger:{trigger:'.circuit',start:'top top',end:'+=320%',pin:'.circuit-pin',scrub:.6,anticipatePin:1}});
+
+  // Riel de vuelta
+  gsap.to('.lap-fill',{scaleY:1,ease:'none',scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:.3}});
+  document.querySelectorAll('[data-lap]').forEach(function(a){
+    var t=document.querySelector(a.getAttribute('href'));
+    ScrollTrigger.create({trigger:t,start:'top 55%',end:'bottom 55%',onToggle:function(self){a.classList.toggle('on',self.isActive);}});
+  });
+
+  document.fonts && document.fonts.ready.then(function(){ScrollTrigger.refresh();});
+  window.addEventListener('load',function(){ScrollTrigger.refresh();});
+})();
+</script>
+</body>
+</html>

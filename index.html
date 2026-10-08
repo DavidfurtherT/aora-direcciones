@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Cinco direcciones de diseño para la web de AORA Fitness Wellness Festival. Recórrelas y vota.">
+<meta name="robots" content="noindex">
+<title>AORA Direcciones Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,300;6..72,400&display=swap">
+<style>
+html,body{margin:0}
+/* Sala de revisión neutral: no debe competir con las 5 propuestas. Columna editorial + fichas grandes por dirección. */
+:root {
+  --bg: #F6F4EF; --fg: #1E2321; --mut: #5A615D; --line: #1E23211F; --card: #FFFFFF; --chip: #EEEBE3; --accent: #3A413D; --on-accent: #F9F7F2; --mark: #FFA38B;
+  --f-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --f-text: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+  --r: 18px; --gut: clamp(16px, 4vw, 48px);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111412; --fg: #F1EDE4; --mut: #A6ACA7; --line: #F1EDE41F; --card: #1A1E1C; --chip: #232826; --accent: #F1EDE4; --on-accent: #111412; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #111412; --fg: #F1EDE4; --mut: #A6ACA7; --line: #F1EDE41F; --card: #1A1E1C; --chip: #232826; --accent: #F1EDE4; --on-accent: #111412; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 17px/1.55 var(--f-text); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: var(--gut); padding-block: clamp(32px, 6vw, 72px) 96px; }
+h1, h2 { font-family: var(--f-display); font-weight: 300; letter-spacing: -0.02em; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(40px, 7vw, 92px); line-height: 0.98; max-width: 14ch; }
+.lead { max-width: 60ch; color: var(--mut); font-size: clamp(17px, 1.4vw, 19px); margin: 24px 0 0; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mut); margin: 0 0 20px; }
+.logo { width: 132px; color: var(--fg); display: block; margin-bottom: 40px; }
+.how { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 48px 0 0; padding: 0; list-style: none; counter-reset: s; }
+.how li { counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 20px 22px; min-width: 0; }
+.how li::before { content: counter(s); font-family: var(--f-display); font-size: 34px; line-height: 1; display: block; margin-bottom: 10px; color: var(--mut); }
+.how b { display: block; margin-bottom: 4px; }
+.how span { color: var(--mut); font-size: 15px; }
+.dirs { display: grid; gap: clamp(28px, 4vw, 48px); margin-top: clamp(56px, 8vw, 96px); }
+.dir { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(20px, 3vw, 40px); align-items: start; padding-top: clamp(28px, 4vw, 48px); border-top: 1px solid var(--line); }
+.shots { position: relative; display: block; border-radius: var(--r); overflow: hidden; background: var(--chip); aspect-ratio: 16 / 10; max-width: 100%; }
+.shots img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1); }
+.shots:hover img.desk, .shots:focus-visible img.desk { transform: scale(1.025); }
+.shots .phone { position: absolute; right: 14px; bottom: 14px; width: 22%; aspect-ratio: 390 / 844; height: auto; border-radius: 14px; border: 3px solid var(--card); box-shadow: 0 18px 40px -16px #0008; object-fit: cover; }
+.num { font-family: var(--f-display); font-size: 15px; color: var(--mut); margin: 0 0 6px; }
+.dir h2 { font-size: clamp(38px, 4.6vw, 64px); line-height: 1; }
+.dir p.concept { margin: 16px 0 0; max-width: 46ch; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 0; padding: 0; list-style: none; }
+.chips li { background: var(--chip); border-radius: 999px; padding: 5px 12px; font-size: 13.5px; }
+.sw { display: flex; gap: 6px; margin-top: 16px; }
+.sw i { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); }
+.open { display: inline-flex; align-items: center; gap: 12px; margin-top: 26px; padding: 8px 8px 8px 22px; border-radius: 999px; background: var(--accent); color: var(--on-accent); text-decoration: none; font-weight: 600; transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1); }
+.open span { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in oklab, var(--on-accent) 16%, transparent); transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1); }
+.open:hover span { transform: translate(2px, -2px); }
+.open:active { transform: scale(0.98); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+.vote { margin-top: clamp(64px, 9vw, 112px); background: var(--card); border: 1px solid var(--line); border-radius: calc(var(--r) + 6px); padding: clamp(22px, 4vw, 48px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); }
+.vote h2 { font-size: clamp(34px, 4vw, 54px); line-height: 1.02; }
+.poll { background: var(--chip); border-radius: var(--r); padding: 20px; min-width: 0; }
+.poll pre { margin: 0; white-space: pre-wrap; word-break: break-word; font: 15px/1.6 var(--f-text); }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.btn { appearance: none; border: 1px solid var(--line); background: var(--card); color: var(--fg); border-radius: 999px; padding: 10px 18px; font: 600 15px var(--f-text); cursor: pointer; text-decoration: none; }
+.btn.primary { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+.steps { margin: 18px 0 0; padding-left: 20px; color: var(--mut); }
+.steps li + li { margin-top: 6px; }
+.note { font-size: 14px; color: var(--mut); margin-top: 40px; max-width: 70ch; }
+.status { font-size: 14px; color: var(--mut); min-height: 1.4em; margin-top: 8px; }
+@media (max-width: 860px) {
+  .dir, .vote { grid-template-columns: 1fr; }
+  .how { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <svg class="logo" viewBox="30 24 842 192" role="img" aria-label="AORA" fill="currentColor"><path d="M 139.96 28.34 L 236.06 206.15 L 211.51 206.15 L 138.71 71.44 L 58.96 206.15 L 34.71 206.15 Z M 473.18 206.15 L 473.18 32.28 L 572.14 32.28 C 606.91 32.28 635.10 57.26 635.10 88.09 C 635.10 118.91 606.91 143.90 572.14 143.90 L 567.13 143.90 L 627.53 206.15 L 598.61 206.15 L 521.55 126.73 L 572.14 126.73 C 593.99 126.73 611.70 109.42 611.70 88.09 C 611.70 66.75 593.99 49.45 572.14 49.45 L 494.64 49.45 L 494.64 206.15 Z M 763.89 28.34 L 866.36 206.15 L 841.60 206.15 L 763.52 70.65 L 683.04 206.15 L 658.28 206.15 Z M 763.89 28.34"/><path fill-rule="evenodd" d="M 443.41 119.78 C 443.41 169.73 398.41 210.23 342.88 210.23 C 287.36 210.23 242.35 169.73 242.35 119.78 C 242.35 69.83 287.36 29.34 342.88 29.34 C 398.41 29.34 443.41 69.83 443.41 119.78 Z M 422.38 119.78 C 422.38 79.99 386.79 47.73 342.88 47.73 C 298.98 47.73 263.39 79.99 263.39 119.78 C 263.39 159.58 298.98 191.84 342.88 191.84 C 386.79 191.84 422.38 159.58 422.38 119.78 Z M 422.38 119.78"/></svg>
+  <p class="eyebrow">Web oficial · Primera edición · Febrero 2027</p>
+  <h1>Cinco caminos para la web de AORA.</h1>
+  <p class="lead">Cada dirección es un sistema completo: tipografía, color, geometría tomada del logo, fotografía, movimiento y botones. Recórrelas en el computador y en el celular, y vota en el grupo de WhatsApp por la que quieres llevar a producción.</p>
+  <ol class="how">
+    <li><b>Abre cada dirección</b><span>Haz scroll hasta el final: el movimiento es parte de la propuesta.</span></li>
+    <li><b>Mírala en el celular</b><span>Abre este mismo link en tu teléfono.</span></li>
+    <li><b>Vota en WhatsApp</b><span>Una encuesta con los 5 nombres, abajo está lista para copiar.</span></li>
+  </ol>
+
+  <div class="dirs" id="dirs"></div>
+
+  <section class="vote" id="votar" aria-labelledby="votar-t">
+    <div>
+      <p class="eyebrow">Votación del equipo</p>
+      <h2 id="votar-t">Encuesta para el grupo de WhatsApp</h2>
+      <ol class="steps">
+        <li>En el grupo, toca el clip (Adjuntar) y elige <b>Encuesta</b>.</li>
+        <li>Pega la pregunta y crea una opción por cada nombre.</li>
+        <li>Desactiva "Permitir varias respuestas" para que cada persona elija una.</li>
+      </ol>
+      <p class="note">Antes de la encuesta, comparte este link en el grupo con el botón "Enviar link por WhatsApp" para que todos puedan revisar las propuestas.</p>
+    </div>
+    <div class="poll">
+      <pre id="poll"></pre>
+      <div class="btns">
+        <button class="btn primary" type="button" id="copy">Copiar encuesta</button>
+        <a class="btn" id="wa" href="#" target="_blank" rel="noopener">Enviar link por WhatsApp</a>
+      </div>
+      <p class="status" id="status" role="status"></p>
+    </div>
+  </section>
+
+  <p class="note">Fotografías ilustrativas generadas con IA, de uso transitorio hasta tener fotos reales del festival. Tipografías de Google Fonts como alternativa a Canela y Aptos del manual, mientras llegan sus licencias web. Los textos solo usan datos confirmados por AORA.</p>
+</div>
+
+
+<script>
+const SHARE_URL = "https://davidfurthert.github.io/aora-direcciones/";
+const DIRS = [
+  { slug: "cumbre", name: "Cumbre", line: "Calma de altura y energía de ascenso. La A del logo es un pico: capas de cordillera que se abren con el scroll como un amanecer sobre la sede.", chips: ["Editorial y luminosa", "Parallax de montañas", "Gloock + Albert Sans"], sw: ["#F9F7F2", "#92ACA0", "#899064", "#3A413D", "#FFA38B"] },
+  { slug: "pulso", name: "Pulso", line: "El festival de noche. La O del logo late como una onda de sonido y revela la tarima; el peach de marca es la única luz.", chips: ["Oscura y energética", "Ondas y horizontal", "Unbounded + Onest"], sw: ["#142323", "#3A413D", "#FFA38B", "#92ACA0", "#F9F7F2"] },
+  { slug: "pista", name: "Pista", line: "El autódromo como escenario. Señalética de pista con la diagonal de la R y el chevron de la A; el circuito se dibuja con el scroll, sector por sector.", chips: ["Deportiva y precisa", "Circuito que se dibuja", "Archivo + JetBrains Mono"], sw: ["#F9F7F2", "#3A413D", "#899064", "#D6D2C4", "#FFA38B"] },
+  { slug: "ritual", name: "Ritual", line: "Esfuerzo y recuperación, calor y frío. Un anillo de agua y una línea que cruza de la barra al hielo mientras bajas por la página.", chips: ["Contraste de temperaturas", "Agua líquida interactiva", "Young Serif + Karla"], sw: ["#92ACA0", "#D6D2C4", "#F9F7F2", "#FFA38B", "#C5B9AC"] },
+  { slug: "tribu", name: "Tribu", line: "Comunidad hecha a mano. Fotos impresas, cinta, recortes con las formas del logo y credenciales de festival que se voltean.", chips: ["Collage humano", "Fotos que caen y se apilan", "Bricolage + DM Mono"], sw: ["#F9F7F2", "#FFA38B", "#92ACA0", "#899064", "#3A413D"] },
+];
+const POLL = "AORA · ¿Con qué dirección de diseño seguimos para la web?\n\n" + DIRS.map((d, i) => `${i + 1}. ${d.name}`).join("\n");
+
+const host = document.getElementById("dirs");
+DIRS.forEach((d, i) => {
+  const el = document.createElement("article");
+  el.className = "dir";
+  el.id = d.slug;
+  el.innerHTML = `
+    <a class="shots" href="d/${d.slug}.html" aria-label="Abrir la dirección ${d.name}">
+      <img class="desk" src="capturas/${d.slug}-escritorio.jpg" alt="Primera pantalla de la dirección ${d.name} en computador" loading="${i < 2 ? "eager" : "lazy"}" decoding="async">
+      <img class="phone" src="capturas/${d.slug}-celular.jpg" alt="Primera pantalla de la dirección ${d.name} en celular" loading="lazy" decoding="async">
+    </a>
+    <div>
+      <p class="num">Dirección ${i + 1}</p>
+      <h2>${d.name}</h2>
+      <p class="concept">${d.line}</p>
+      <ul class="chips">${d.chips.map((c) => `<li>${c}</li>`).join("")}</ul>
+      <div class="sw" aria-hidden="true">${d.sw.map((c) => `<i style="background:${c}"></i>`).join("")}</div>
+      <a class="open" href="d/${d.slug}.html">Recorrer ${d.name}<span aria-hidden="true">↗</span></a>
+    </div>`;
+  host.appendChild(el);
+});
+
+document.getElementById("poll").textContent = POLL;
+const status = document.getElementById("status");
+document.getElementById("copy").addEventListener("click", () => {
+  const ok = () => { status.textContent = "Encuesta copiada. Pégala en WhatsApp."; };
+  try {
+    navigator.clipboard.writeText(POLL).then(ok, () => selectPoll());
+  } catch { selectPoll(); }
+});
+function selectPoll() {
+  const r = document.createRange(); r.selectNodeContents(document.getElementById("poll"));
+  const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  status.textContent = "Texto seleccionado: cópialo con Cmd/Ctrl + C.";
+}
+const msg = "Equipo AORA: estas son las 5 direcciones de diseño para la web. Recórranlas (también en el celular) y votemos en la encuesta.\n" + (SHARE_URL || "");
+document.getElementById("wa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
+</script>
+
+</body>
+</html>

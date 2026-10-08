@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AORA · Ritual</title>
+<meta name="description" content="Fitness Wellness Festival. Primera edición, febrero 2027, Autódromo de Tocancipá.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,300..700;1,400&family=Young+Serif&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="../fotos/arco-entrada.jpg">
+<style>
+/* ==========================================================================
+   DIRECCIÓN 4 · RITUAL
+   Esfuerzo y recuperación. Calor y frío. Tensión y calma.
+   Dos temperaturas de la paleta de marca en diálogo:
+     CALOR  → peach, taupe, olive   (esfuerzo, sol, piel)
+     FRÍO   → sage, stone, "ice"    (recuperación, agua, sombra)
+   La O del logo es una superficie de agua/hielo que cambia de temperatura.
+   El vidrio esmerilado aparece SOLO donde hay hielo.
+   ========================================================================== */
+:root{
+  /* Marca (Manual AORA 2027) */
+  --cream:#F9F7F2; --ink:#3A413D; --sage:#92ACA0; --olive:#899064;
+  --peach:#FFA38B; --stone:#D6D2C4; --taupe:#C5B9AC; --logo:#142323;
+
+  /* Derivados de temperatura */
+  --ice:#B8D0CC;                 /* sage llevado a azul-verde claro: superficie de hielo */
+  --glacier:#4F7774;             /* sage profundo, azul-verde: sombras frías (texto AA sobre cream) */
+  --deep:#142323;                /* noche / agua profunda = color del logo */
+  --deep-2:#1C2E2D;
+  --ember:#B4553C;               /* peach en sombra: solo para detalles sobre cream (AA) */
+  --warm-wash:color-mix(in oklab, var(--peach) 20%, var(--cream));
+  --cold-wash:color-mix(in oklab, var(--sage) 24%, var(--cream));
+  --line:color-mix(in oklab, var(--ink) 22%, transparent);
+  --line-soft:color-mix(in oklab, var(--ink) 12%, transparent);
+
+  /* Tipografía: Young Serif (400 único, sin itálica) + Karla */
+  --f-display:"Young Serif", "Iowan Old Style", Georgia, serif;
+  --f-text:"Karla", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --fs-hero:clamp(3.05rem, 1.15rem + 5.6vw, 7.4rem);
+  --fs-mega:clamp(3.4rem, 1rem + 9.2vw, 11rem);
+  --fs-h2:clamp(2.35rem, 1.25rem + 4.2vw, 5.4rem);
+  --fs-h3:clamp(1.55rem, 1.15rem + 1.5vw, 2.45rem);
+  --fs-lead:clamp(1.15rem, 1rem + .55vw, 1.5rem);
+  --fs-body:1.0625rem;
+  --fs-small:.9375rem;
+  --fs-label:.75rem;
+  --track:.22em;
+
+  /* Espacio */
+  --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:40px; --s6:64px; --s7:104px; --s8:168px;
+  --gutter:clamp(16px, 4.2vw, 72px);
+  --section:clamp(6.5rem, 4rem + 9vw, 13rem);
+  --maxw:1440px;
+
+  /* Forma: dos radios */
+  --r:28px; --pill:999px;
+
+  /* Movimiento */
+  --ease:cubic-bezier(.22,1,.36,1);
+  --spring:cubic-bezier(.32,.72,0,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--cream);color:var(--ink);font:400 var(--fs-body)/1.6 var(--f-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3,p,ul,ol,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+::selection{background:var(--peach);color:var(--logo)}
+:focus-visible{outline:2px solid var(--logo);outline-offset:4px;border-radius:6px}
+.on-dark :focus-visible{outline-color:var(--peach)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Grano fino fijo */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.085;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.4 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* Tipos */
+.label{font:600 var(--fs-label)/1.3 var(--f-text);letter-spacing:var(--track);text-transform:uppercase}
+.display{font-family:var(--f-display);font-weight:400;letter-spacing:-.015em;line-height:.98}
+.h2{font:400 var(--fs-h2)/1 var(--f-display);letter-spacing:-.02em;color:var(--logo)}
+.h3{font:400 var(--fs-h3)/1.08 var(--f-display);letter-spacing:-.01em;color:var(--logo)}
+.lead{font-size:var(--fs-lead);line-height:1.5}
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
+.tick{display:inline-block;width:28px;height:1px;background:currentColor;vertical-align:middle;margin-right:12px;opacity:.6}
+
+/* Fotos: split-tone (sombras frías sage, luces cálidas peach) */
+.tone{position:relative;overflow:hidden;isolation:isolate;background:var(--deep)}
+.tone img{width:100%;height:100%;object-fit:cover;filter:saturate(.62) contrast(1.06)}
+.tone::before,.tone::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1}
+.tone::before{background:#21393A;mix-blend-mode:lighten;opacity:.9}
+.tone::after{background:#FFE3D3;mix-blend-mode:multiply}
+.tone--warm::before{background:#33302A}
+.tone--warm::after{background:#FFD2BC}
+.tone--cold::before{background:#1B3C40}
+.tone--cold::after{background:#E1EEEB}
+
+/* Botones */
+.btn{--bg:var(--logo);--fg:var(--cream);position:relative;display:inline-flex;align-items:center;gap:18px;min-height:52px;padding:0 24px 0 26px;border:0;border-radius:var(--pill);background:var(--bg);color:var(--fg);font:600 var(--fs-small)/1 var(--f-text);letter-spacing:.02em;text-decoration:none;cursor:pointer;transition:transform .5s var(--spring),background-color .5s var(--ease),color .5s var(--ease),box-shadow .5s var(--ease)}
+.btn .arw{position:relative;width:26px;height:12px;flex:none;transition:width .55s var(--spring)}
+.btn .arw::before{content:"";position:absolute;left:0;right:1px;top:50%;height:1.5px;background:currentColor;transform:translateY(-50%)}
+.btn .arw::after{content:"";position:absolute;right:1px;top:50%;width:8px;height:8px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:translateY(-50%) rotate(45deg)}
+.btn:hover{--bg:#0B1717;box-shadow:0 18px 40px -22px rgba(20,35,35,.55)}
+.btn:hover .arw{width:38px}
+.btn:active{transform:scale(.975)}
+.btn--ghost{--bg:transparent;--fg:var(--logo);box-shadow:inset 0 0 0 1px var(--line)}
+.btn--ghost:hover{--bg:color-mix(in oklab, var(--sage) 22%, transparent);box-shadow:inset 0 0 0 1px var(--glacier)}
+.btn--peach{--bg:var(--peach);--fg:var(--logo)}
+.btn--peach:hover{--bg:#FFB7A3;box-shadow:0 22px 50px -24px rgba(255,163,139,.7)}
+.btn--xl{min-height:72px;padding:0 30px 0 36px;font-size:1.0625rem;gap:24px}
+.btn--diag .arw{width:18px;height:18px}
+.btn--diag .arw::before{left:auto;right:0;top:0;width:150%;height:1.5px;transform-origin:right center;transform:rotate(-45deg) translate(0,0);right:1px;top:1px}
+.btn--diag .arw::after{right:0;top:0;transform:none;width:10px;height:10px}
+.btn--diag:hover .arw{width:18px;transform:translate(3px,-3px)}
+
+/* Barra de dirección (fija, discreta) */
+.dirbar{position:fixed;left:max(12px, env(safe-area-inset-left));bottom:max(12px, env(safe-area-inset-bottom));z-index:50;display:flex;align-items:center;gap:14px;padding:9px 16px;border-radius:var(--pill);background:rgba(20,35,35,.86);color:var(--cream);font:600 11px/1 var(--f-text);letter-spacing:.14em;text-transform:uppercase;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.dirbar a{text-decoration:none;opacity:.78;transition:opacity .3s var(--ease)}
+.dirbar a:hover{opacity:1}
+.dirbar i{width:1px;height:12px;background:rgba(249,247,242,.3)}
+
+/* Header */
+.top{position:absolute;inset:0 0 auto 0;z-index:10}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:28px}
+.top .brand{color:var(--logo);display:block;width:112px}
+.top nav{display:flex;gap:30px;align-items:center}
+.top nav a{font:600 .8125rem/1 var(--f-text);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--ink);position:relative;padding:8px 0}
+.top nav a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--spring)}
+.top nav a:hover::after{transform:scaleX(1);transform-origin:left}
+.top nav .nav-cta{padding:12px 18px;border-radius:var(--pill);box-shadow:inset 0 0 0 1px var(--line)}
+.top nav .nav-cta::after{display:none}
+.top nav .nav-cta:hover{background:var(--logo);color:var(--cream)}
+
+/* HERO */
+.hero{position:relative;min-height:100dvh;display:grid;align-items:center;padding-block:120px 72px}
+.hero .wrap{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:center}
+.hero__text{grid-column:1 / span 6;position:relative;z-index:2;padding-right:12px}
+.hero__eyebrow{display:flex;flex-wrap:wrap;gap:10px 18px;color:var(--glacier);margin-bottom:40px}
+.hero h1{font-size:var(--fs-hero);color:var(--logo)}
+.hero h1 .ln{display:block}
+.hero h1 svg{display:block;height:.78em;width:auto;margin-top:.16em;color:var(--logo);overflow:visible}
+.hero__sub{margin-top:44px;max-width:30ch;font-size:var(--fs-lead);line-height:1.45;color:var(--ink)}
+.hero__ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:40px}
+.hero__media{grid-column:7 / -1;position:relative;height:min(78dvh, 780px);min-height:440px}
+.hero__frame{position:absolute;inset:0;border-radius:var(--r);overflow:hidden}
+.hero__frame .tone{position:absolute;inset:0}
+.hero__frame img{object-position:50% 50%}
+.hero__frame canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s var(--ease);z-index:3}
+.hero__media.gl-on canvas{opacity:1}
+.hero__media .ring-fallback{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;transition:opacity .8s var(--ease)}
+.hero__media.gl-on .ring-fallback{opacity:0}
+.hero__tag{position:absolute;left:-28px;bottom:44px;z-index:4;display:flex;flex-direction:column;gap:6px;padding:18px 22px 18px 22px;background:var(--cream);border-radius:0 var(--r) var(--r) 0;color:var(--logo);box-shadow:0 30px 60px -40px rgba(20,35,35,.5)}
+.hero__tag .label{color:var(--glacier)}
+.hero__tag strong{font:400 1.25rem/1.1 var(--f-display)}
+.hero__halo{position:absolute;z-index:0;width:min(62vw,880px);aspect-ratio:1;left:-12vw;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--sage);opacity:.38}
+.hero__scroll{position:absolute;left:var(--gutter);bottom:28px;display:none}
+
+/* MANIFIESTO */
+.manifest{padding-block:var(--section)}
+.manifest .wrap{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:56px}
+.manifest__label{grid-column:1 / span 3;color:var(--glacier);padding-top:.9rem}
+.manifest__text{grid-column:4 / span 9}
+.manifest h2{font-family:var(--f-display);font-weight:400;letter-spacing:-.02em;font-size:var(--fs-h2);line-height:1.04;color:var(--logo);max-width:16ch}
+.manifest h2 .w{display:inline-block;will-change:opacity}
+.manifest__body{grid-column:4 / span 4;font-size:var(--fs-lead);line-height:1.55}
+.manifest__orb{grid-column:9 / span 4;grid-row:2 / span 2;justify-self:end;width:100%;max-width:400px;aspect-ratio:1;border-radius:50%;margin-top:-40px}
+.manifest__orb img{object-position:40% 60%}
+.axes{grid-column:4 / span 5;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line)}
+.axes li{display:flex;justify-content:space-between;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--line);gap:12px}
+.axes li:nth-child(odd){padding-right:24px}
+.axes li:nth-child(even){padding-left:24px;border-left:1px solid var(--line)}
+.axes span:first-child{font:400 1.35rem/1 var(--f-display);color:var(--logo)}
+.axes .temp{width:42px;height:6px;border-radius:var(--pill);flex:none}
+
+/* RITUAL (pinned) — estado base: tres bloques legibles sin JS */
+.ritual{position:relative;background:var(--deep);color:var(--cream)}
+.rit-head{padding:var(--s7) 0 var(--s6)}
+.rit-head .wrap{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
+.rit-head .label{color:var(--ice)}
+.rit-head p{max-width:34ch;color:color-mix(in oklab, var(--cream) 86%, transparent)}
+.rit-pin{position:relative}
+.rit-stage{position:relative;min-height:92dvh;display:flex;align-items:flex-end}
+.rit-media{position:absolute;inset:0}
+.rit-media img{height:100%}
+.s1 .rit-media img{object-position:50% 40%}
+.s2 .rit-media img{object-position:50% 50%}
+.s3 .rit-media img{object-position:50% 60%}
+.rit-copy{position:relative;z-index:4;margin:0 var(--gutter) clamp(48px,8vh,96px);max-width:min(58rem, calc(100% - 2 * var(--gutter)))}
+.s3{align-items:flex-start}
+.s3 .rit-copy{margin-top:clamp(88px,13vh,150px);margin-bottom:0}
+.rit-copy .label{display:block;margin-bottom:18px}
+.rit-copy h2{font:400 clamp(3rem, 1rem + 7.4vw, 8.6rem)/.92 var(--f-display);letter-spacing:-.03em}
+.rit-copy p{margin-top:22px;max-width:34ch;font-size:var(--fs-lead);line-height:1.45}
+.rit-copy--dark{padding:28px 32px 30px 0}
+.rit-copy--dark::before{content:"";position:absolute;inset:-46% -40% -30% -60%;z-index:-1;background:radial-gradient(closest-side, rgba(14,24,24,.82), rgba(14,24,24,.55) 55%, rgba(14,24,24,0));pointer-events:none}
+.rit-copy--dark .label{color:var(--peach)}
+.s3 .rit-copy--dark .label{color:var(--stone)}
+/* hielo: aquí sí, vidrio esmerilado */
+.rit-copy--frost{width:fit-content;padding:32px 40px 36px;border-radius:var(--r);background:rgba(236,243,241,.74);color:var(--logo);-webkit-backdrop-filter:blur(18px) saturate(1.15);backdrop-filter:blur(18px) saturate(1.15);box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 40px 80px -50px rgba(10,30,32,.6)}
+.rit-copy--frost .label{color:var(--glacier)}
+.rit-copy--frost h2{color:var(--logo)}
+.rit-ring,.rit-line,.rit-tags,.rit-steps{display:none}
+
+/* RITUAL con movimiento */
+html.motion .rit-pin{height:100dvh;overflow:hidden}
+html.motion .rit-stage{position:absolute;inset:0;min-height:0}
+html.motion .rit-ring{display:block;position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+html.motion .rit-line{display:block;position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+html.motion .rit-tags{display:flex;position:absolute;top:clamp(84px,14vh,140px);left:0;z-index:4;gap:56px;transform:translateX(-50%);white-space:nowrap;pointer-events:none}
+.rit-tags span{padding:9px 14px;border-radius:var(--pill);font:600 11px/1 var(--f-text);letter-spacing:.2em;text-transform:uppercase}
+.rit-tags .warm{background:var(--peach);color:var(--logo)}
+.rit-tags .cold{background:var(--ice);color:var(--logo)}
+html.motion .rit-steps{display:flex;position:absolute;right:var(--gutter);bottom:clamp(48px,8vh,96px);z-index:4;flex-direction:column;gap:14px;padding:18px 18px 18px 22px;border-radius:var(--r);background:rgba(20,35,35,.62)}
+.rit-steps li{display:flex;align-items:center;gap:12px;justify-content:flex-end;font:600 11px/1 var(--f-text);letter-spacing:.2em;text-transform:uppercase;color:rgba(249,247,242,.62);transition:color .5s var(--ease)}
+.rit-steps li::after{content:"";width:18px;height:1px;background:currentColor;transition:width .6s var(--spring)}
+.rit-steps li.on{color:var(--cream)}
+.rit-steps li.on::after{width:44px}
+
+/* PROGRAMA */
+.program{padding-block:var(--section)}
+.program__head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:end;margin-bottom:var(--s7)}
+.program__head .label{grid-column:1 / span 3;color:var(--glacier)}
+.program__head h2{grid-column:4 / span 6}
+.program__head p{grid-column:10 / span 3;font-size:var(--fs-small);color:var(--ink)}
+.temps{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:start}
+.temp-col{position:relative}
+.temp-col--warm{grid-column:1 / span 4}
+.temp-col--cold{grid-column:5 / span 4;margin-top:140px}
+.temp-col--mild{grid-column:9 / span 4;margin-top:56px}
+.temp-col .shape{position:relative;width:100%;margin-bottom:40px}
+.shape--peak{aspect-ratio:5/4;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.shape--peak img{object-position:50% 35%}
+.shape--ring{aspect-ratio:1;border-radius:50%}
+.shape--diag{aspect-ratio:4/5;clip-path:polygon(0 0,62% 0,100% 100%,38% 100%)}
+.shape--diag img{object-position:50% 60%}
+.shape--ring{overflow:hidden}
+.frost-disc{position:absolute;z-index:3;left:0;right:0;bottom:0;height:36%;background:linear-gradient(180deg,rgba(236,243,241,.55),rgba(184,208,204,.42));-webkit-backdrop-filter:blur(6px) saturate(1.1);backdrop-filter:blur(6px) saturate(1.1);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.85)}
+.temp-col .bar{height:3px;width:56px;border-radius:var(--pill);margin-bottom:22px}
+.temp-col--warm .bar{background:var(--peach)}
+.temp-col--cold .bar{background:var(--sage)}
+.temp-col--mild .bar{background:linear-gradient(90deg,var(--peach),var(--sage))}
+.temp-col .label{color:var(--glacier);margin-bottom:12px;display:block}
+.temp-col--warm .label{color:var(--ember)}
+.temp-col h3{margin-bottom:26px}
+.temp-col ul{border-top:1px solid var(--line)}
+.temp-col li{padding:15px 0;border-bottom:1px solid var(--line-soft);display:flex;justify-content:space-between;gap:16px;align-items:baseline}
+.temp-col li span:last-child{font-size:.8125rem;color:color-mix(in oklab, var(--ink) 80%, transparent);text-align:right}
+.temp-col li strong{font-weight:600}
+
+/* PARA QUIÉN */
+.who{padding-block:var(--section);background:var(--cold-wash)}
+.who .wrap{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.who__aside{grid-column:1 / span 5;align-self:start;position:sticky;top:10vh}
+.who__aside .label{color:var(--glacier);display:block;margin-bottom:24px}
+.who__aside p{margin-top:24px;max-width:32ch}
+.who__photo{margin-top:48px;aspect-ratio:4/3;border-radius:var(--r);max-width:440px}
+.who__photo img{object-position:50% 70%}
+.who__right{grid-column:7 / -1}
+.who__list{border-top:1px solid var(--line)}
+.who__list li{--c:color-mix(in oklab, var(--peach) var(--w), var(--sage));position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px;padding:26px 0 26px 28px;border-bottom:1px solid var(--line)}
+.who__list li::before{content:"";position:absolute;left:0;top:26px;bottom:26px;width:4px;border-radius:var(--pill);background:var(--c);transition:transform .6s var(--spring);transform-origin:center}
+.who__list li::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg, color-mix(in oklab, var(--c) 30%, transparent), transparent 70%);opacity:0;transition:opacity .5s var(--ease)}
+.who__list li{isolation:isolate}
+.who__list li:hover::after{opacity:1}
+.who__list li:hover::before{transform:scaleY(1.35)}
+.who__list .p{font:400 clamp(1.45rem,1.1rem + 1.2vw,2.2rem)/1.1 var(--f-display);color:var(--logo)}
+.who__list .e{font:600 var(--fs-label)/1.3 var(--f-text);letter-spacing:.18em;text-transform:uppercase;color:var(--logo);text-align:right}
+.who__scale{display:flex;justify-content:space-between;margin-top:20px;color:var(--glacier)}
+
+/* LEMA */
+.motto{padding-block:var(--section);text-align:center;position:relative;overflow:hidden}
+.motto p{font:400 var(--fs-mega)/.95 var(--f-display);letter-spacing:-.03em;color:var(--logo);max-width:12ch;margin-inline:auto;position:relative;z-index:1}
+.motto .ringdeco{position:absolute;left:50%;top:50%;width:min(92vw,980px);aspect-ratio:1;transform:translate(-50%,-50%);color:var(--peach);opacity:.42;pointer-events:none}
+
+/* SEDE */
+.venue{position:relative;padding-bottom:var(--section)}
+.venue__img{position:relative;height:min(100dvh, 960px);min-height:520px;overflow:hidden}
+.venue__img .tone{position:absolute;inset:-12% 0 0 0}
+.venue__img img{object-position:50% 45%}
+.venue__dial{position:absolute;right:6vw;top:12%;width:min(34vw,420px);aspect-ratio:1;z-index:2;color:var(--cream);opacity:.7;pointer-events:none}
+.venue__card{position:relative;z-index:3;margin-top:-22vh;max-width:720px;background:var(--cream);border-radius:0 var(--r) var(--r) 0;padding:56px var(--gutter) 56px var(--gutter);margin-right:var(--gutter)}
+.venue__card .label{color:var(--glacier);display:block;margin-bottom:24px}
+.venue__card h2{max-width:14ch}
+.venue__meta{display:flex;flex-wrap:wrap;gap:12px 36px;margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
+.venue__meta div{display:flex;flex-direction:column;gap:6px}
+.venue__meta .label{margin:0;font-size:11px}
+.venue__meta strong{font:400 1.2rem/1.2 var(--f-display);color:var(--logo)}
+
+/* ENTRADAS */
+.tickets{position:relative;overflow:hidden;background:var(--deep);color:var(--cream);padding-block:var(--section);border-radius:var(--r) var(--r) 0 0}
+.tickets .wrap{position:relative;z-index:1;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:64px}
+.tickets__head{grid-column:1 / span 6}
+.tickets__head .label{color:var(--peach);display:block;margin-bottom:28px}
+.tickets__head h2{color:var(--cream)}
+.tickets__head p{margin-top:28px;max-width:36ch;color:color-mix(in oklab, var(--cream) 86%, transparent);font-size:var(--fs-lead)}
+.tickets__note{display:inline-flex;align-items:center;gap:12px;margin-top:32px;padding:10px 16px;border-radius:var(--pill);box-shadow:inset 0 0 0 1px rgba(249,247,242,.25);color:var(--cream)}
+.tickets__note::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--peach)}
+.steps{grid-column:8 / -1;align-self:end;counter-reset:s}
+.steps li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:20px;padding:28px 0;border-top:1px solid rgba(249,247,242,.18)}
+.steps li:last-child{border-bottom:1px solid rgba(249,247,242,.18)}
+.steps .n{font:400 2.6rem/1 var(--f-display);color:var(--peach)}
+.steps h3{font:400 1.45rem/1.2 var(--f-display);color:var(--cream);margin-bottom:6px}
+.steps p{color:color-mix(in oklab, var(--cream) 80%, transparent);font-size:var(--fs-small)}
+.tickets__cta{grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;padding-top:48px;border-top:1px solid rgba(249,247,242,.18)}
+.tickets__cta small{font-size:var(--fs-small);color:color-mix(in oklab, var(--cream) 78%, transparent);max-width:44ch}
+.tickets__o{position:absolute;right:-14vw;top:-10vw;width:min(70vw,900px);color:var(--sage);opacity:.16;pointer-events:none}
+
+/* NOVEDADES + MARCAS */
+.join{background:var(--deep-2);color:var(--cream);padding-block:0 var(--section)}
+.join .wrap{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:56px}
+.join__form{grid-column:1 / span 7;background:var(--cream);color:var(--ink);border-radius:var(--r);padding:clamp(28px,4vw,56px)}
+.join__form .label{color:var(--glacier);display:block;margin-bottom:18px}
+.join__form h3{margin-bottom:12px}
+.join__form > p{max-width:40ch;margin-bottom:32px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field--full{grid-column:1 / -1}
+.field label{font:600 11px/1 var(--f-text);letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
+.field input{appearance:none;width:100%;min-height:54px;padding:0 22px;border:0;border-radius:var(--pill);background:#fff;box-shadow:inset 0 0 0 1px var(--line);font:400 1rem var(--f-text);color:var(--logo);transition:box-shadow .4s var(--ease)}
+.field input:hover{box-shadow:inset 0 0 0 1px var(--glacier)}
+.field input:focus{outline:none;box-shadow:inset 0 0 0 2px var(--logo),0 0 0 5px color-mix(in oklab, var(--sage) 35%, transparent)}
+.check{grid-column:1 / -1;display:flex;gap:14px;align-items:flex-start;font-size:var(--fs-small);line-height:1.45;margin-top:6px;cursor:pointer}
+.check input{appearance:none;flex:none;width:22px;height:22px;margin:1px 0 0;border-radius:6px;box-shadow:inset 0 0 0 1.5px var(--ink);background:#fff;display:grid;place-items:center;cursor:pointer;transition:background .3s var(--ease)}
+.check input:checked{background:var(--logo);box-shadow:none}
+.check input:checked::after{content:"";width:10px;height:5px;border-left:2px solid var(--cream);border-bottom:2px solid var(--cream);transform:translateY(-1px) rotate(-45deg)}
+.check input:focus-visible{outline:2px solid var(--logo);outline-offset:3px}
+.form-foot{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:12px}
+.form-msg{font-size:var(--fs-small);color:var(--glacier);font-weight:600}
+.join__brands{grid-column:9 / -1;align-self:end;padding-bottom:12px}
+.join__brands .label{color:var(--peach);display:block;margin-bottom:22px}
+.join__brands h3{color:var(--cream);margin-bottom:20px}
+.join__brands p{color:color-mix(in oklab, var(--cream) 84%, transparent)}
+.mail{display:inline-block;margin-top:28px;font:400 clamp(1.1rem,.9rem + .8vw,1.5rem)/1.2 var(--f-display);color:var(--cream);text-decoration:none;border-bottom:1px solid rgba(249,247,242,.4);padding-bottom:6px;word-break:break-all}
+
+/* FOOTER */
+.foot{background:var(--deep);color:var(--cream);padding:var(--s7) 0 calc(var(--s6) + 40px)}
+.foot__motto{font:400 var(--fs-h2)/1 var(--f-display);letter-spacing:-.02em;max-width:14ch}
+.foot__logo{display:block;width:100%;margin-top:var(--s7);color:var(--cream)}
+.foot__row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 40px;margin-top:48px;padding-top:24px;border-top:1px solid rgba(249,247,242,.18);font-size:var(--fs-small);color:color-mix(in oklab, var(--cream) 80%, transparent)}
+.foot__row a{text-decoration:none;color:var(--cream)}
+.foot__row a:hover{color:var(--peach)}
+
+/* Responsive */
+@media (max-width: 960px){
+  .top nav a:not(.nav-cta){display:none}
+  .hero{padding-block:100px 56px;align-items:start}
+  .hero .wrap{display:block}
+  .hero__eyebrow{margin-bottom:24px}
+  .hero__sub{margin-top:26px}
+  .hero__ctas{margin-top:28px}
+  .hero__media{margin-top:48px;height:56dvh;min-height:360px}
+  .hero__tag{left:-8px;bottom:20px;padding:14px 18px}
+  .hero__halo{width:120vw;left:-50vw;top:28%}
+  .manifest .wrap,.program__head,.temps,.who .wrap,.tickets .wrap,.join .wrap{display:block}
+  .manifest__label{margin-bottom:24px}
+  .manifest__body{margin-top:36px}
+  .manifest__orb{margin:48px auto 0;max-width:300px}
+  .axes{margin-top:40px}
+  .program__head h2{margin:20px 0}
+  .temp-col{margin-top:0 !important;margin-bottom:72px}
+  .temp-col .shape{max-width:420px}
+  .who__aside{position:static;margin-bottom:56px}
+  .who__photo{max-width:none}
+  .steps{margin-top:48px}
+  .tickets__cta{margin-top:48px}
+  .join__brands{margin-top:56px}
+  .venue__card{margin-top:-14vh;margin-right:16px;padding:40px 24px}
+  .venue__dial{width:52vw;right:-8vw;top:6%}
+}
+@media (max-width: 560px){
+  .axes{grid-template-columns:1fr}
+  .axes li:nth-child(odd){padding-right:0}
+  .axes li:nth-child(even){padding-left:0;border-left:0}
+  .fields{grid-template-columns:1fr}
+  .who__list li{grid-template-columns:1fr;gap:8px;padding:22px 0 22px 24px}
+  .who__list li::before{top:22px;bottom:22px}
+  .who__list .e{text-align:left}
+  .steps li{grid-template-columns:52px minmax(0,1fr)}
+  .btn--xl{min-height:64px;padding:0 24px 0 26px;width:100%;justify-content:space-between}
+  .rit-copy--frost{padding:24px 22px 26px}
+  .rit-copy--dark{padding:20px 20px 24px 0}
+  .dirbar{gap:10px;padding:8px 12px;font-size:10px;letter-spacing:.1em}
+  html.motion .rit-steps{display:none}
+  html.motion .rit-tags{gap:28px}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<!-- Símbolos del logo oficial (trazos de marca/logo-paths.ts) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="lg-ara" d="M 139.96 28.34 L 236.06 206.15 L 211.51 206.15 L 138.71 71.44 L 58.96 206.15 L 34.71 206.15 Z M 473.18 206.15 L 473.18 32.28 L 572.14 32.28 C 606.91 32.28 635.10 57.26 635.10 88.09 C 635.10 118.91 606.91 143.90 572.14 143.90 L 567.13 143.90 L 627.53 206.15 L 598.61 206.15 L 521.55 126.73 L 572.14 126.73 C 593.99 126.73 611.70 109.42 611.70 88.09 C 611.70 66.75 593.99 49.45 572.14 49.45 L 494.64 49.45 L 494.64 206.15 Z M 763.89 28.34 L 866.36 206.15 L 841.60 206.15 L 763.52 70.65 L 683.04 206.15 L 658.28 206.15 Z M 763.89 28.34"/>
+    <path id="lg-o" fill-rule="evenodd" d="M 443.41 119.78 C 443.41 169.73 398.41 210.23 342.88 210.23 C 287.36 210.23 242.35 169.73 242.35 119.78 C 242.35 69.83 287.36 29.34 342.88 29.34 C 398.41 29.34 443.41 69.83 443.41 119.78 Z M 422.38 119.78 C 422.38 79.99 386.79 47.73 342.88 47.73 C 298.98 47.73 263.39 79.99 263.39 119.78 C 263.39 159.58 298.98 191.84 342.88 191.84 C 386.79 191.84 422.38 159.58 422.38 119.78 Z M 422.38 119.78"/>
+    <path id="lg-desc" d="M 28.29 261.89 L 28.29 238.35 L 41.98 238.35 L 41.98 240.36 L 30.54 240.36 L 30.54 249.29 L 40.90 249.29 L 40.90 251.30 L 30.54 251.30 L 30.54 261.89 Z M 58.44 238.35 L 58.44 261.89 L 56.20 261.89 L 56.20 238.35 Z M 72.35 240.36 L 72.35 238.35 L 89.51 238.35 L 89.51 240.36 L 82.07 240.36 L 82.07 261.89 L 79.82 261.89 L 79.82 240.36 Z M 102.89 261.89 L 102.89 238.35 L 105.48 238.35 L 116.20 254.34 C 116.50 254.78 116.83 255.30 117.20 255.89 C 117.57 256.48 117.95 257.12 118.36 257.81 C 118.77 258.51 119.17 259.24 119.57 260.00 L 119.20 260.00 C 119.14 259.21 119.09 258.46 119.06 257.73 C 119.03 256.99 119.01 256.30 119.00 255.66 C 118.99 255.01 118.98 254.44 118.98 253.93 L 118.98 238.35 L 121.23 238.35 L 121.23 261.89 L 118.61 261.89 L 108.60 247.01 C 108.21 246.41 107.82 245.80 107.42 245.18 C 107.03 244.56 106.60 243.86 106.14 243.08 C 105.67 242.29 105.12 241.37 104.49 240.30 L 104.93 240.30 C 104.97 241.26 105.00 242.16 105.03 243.01 C 105.06 243.85 105.09 244.61 105.11 245.28 C 105.13 245.96 105.14 246.53 105.14 246.99 L 105.14 261.89 Z M 136.21 261.89 L 136.21 238.35 L 149.95 238.35 L 149.95 240.36 L 138.45 240.36 L 138.45 249.04 L 149.21 249.04 L 149.21 251.05 L 138.45 251.05 L 138.45 259.87 L 150.16 259.87 L 150.16 261.89 Z M 173.21 262.29 C 171.60 262.29 170.20 262.02 169.01 261.49 C 167.82 260.96 166.89 260.21 166.21 259.26 C 165.54 258.31 165.16 257.20 165.07 255.94 L 167.36 255.94 C 167.44 256.87 167.75 257.65 168.28 258.29 C 168.81 258.93 169.50 259.42 170.36 259.75 C 171.22 260.08 172.17 260.25 173.21 260.25 C 174.37 260.25 175.40 260.05 176.30 259.66 C 177.21 259.27 177.92 258.73 178.43 258.03 C 178.95 257.32 179.21 256.51 179.21 255.59 C 179.21 254.80 179.01 254.14 178.60 253.62 C 178.19 253.09 177.62 252.64 176.89 252.27 C 176.16 251.90 175.30 251.58 174.32 251.29 L 171.53 250.48 C 169.65 249.93 168.21 249.16 167.20 248.17 C 166.19 247.19 165.69 245.95 165.69 244.46 C 165.69 243.18 166.03 242.07 166.71 241.10 C 167.39 240.13 168.31 239.37 169.48 238.83 C 170.64 238.29 171.95 238.02 173.41 238.02 C 174.89 238.02 176.20 238.29 177.33 238.83 C 178.46 239.38 179.36 240.12 180.02 241.06 C 180.68 242.00 181.03 243.07 181.08 244.26 L 178.89 244.26 C 178.76 242.97 178.18 241.94 177.17 241.17 C 176.16 240.41 174.89 240.03 173.34 240.03 C 172.27 240.03 171.33 240.22 170.50 240.59 C 169.67 240.97 169.03 241.48 168.57 242.13 C 168.11 242.78 167.88 243.53 167.88 244.36 C 167.88 245.17 168.11 245.85 168.57 246.40 C 169.03 246.94 169.62 247.39 170.33 247.73 C 171.04 248.08 171.77 248.36 172.52 248.58 L 174.99 249.29 C 175.75 249.51 176.50 249.78 177.26 250.10 C 178.02 250.43 178.71 250.84 179.33 251.33 C 179.96 251.82 180.46 252.41 180.83 253.11 C 181.21 253.81 181.40 254.65 181.40 255.62 C 181.40 256.89 181.07 258.02 180.42 259.03 C 179.76 260.03 178.83 260.83 177.60 261.41 C 176.38 262 174.91 262.29 173.21 262.29 Z M 202.55 262.29 C 200.94 262.29 199.54 262.02 198.35 261.49 C 197.16 260.96 196.23 260.21 195.55 259.26 C 194.87 258.31 194.49 257.20 194.40 255.94 L 196.70 255.94 C 196.78 256.87 197.08 257.65 197.62 258.29 C 198.14 258.93 198.84 259.42 199.70 259.75 C 200.56 260.08 201.50 260.25 202.55 260.25 C 203.71 260.25 204.74 260.05 205.64 259.66 C 206.54 259.27 207.25 258.73 207.77 258.03 C 208.29 257.32 208.55 256.51 208.55 255.59 C 208.55 254.80 208.34 254.14 207.94 253.62 C 207.53 253.09 206.96 252.64 206.23 252.27 C 205.5 251.90 204.64 251.58 203.65 251.29 L 200.87 250.48 C 198.99 249.93 197.54 249.16 196.53 248.17 C 195.53 247.19 195.02 245.95 195.02 244.46 C 195.02 243.18 195.36 242.07 196.04 241.10 C 196.72 240.13 197.64 239.37 198.81 238.83 C 199.98 238.29 201.29 238.02 202.75 238.02 C 204.23 238.02 205.53 238.29 206.66 238.83 C 207.80 239.38 208.69 240.12 209.35 241.06 C 210.01 242.00 210.37 243.07 210.42 244.26 L 208.22 244.26 C 208.09 242.97 207.52 241.94 206.51 241.17 C 205.50 240.41 204.22 240.03 202.68 240.03 C 201.61 240.03 200.66 240.22 199.84 240.59 C 199.01 240.97 198.37 241.48 197.91 242.13 C 197.44 242.78 197.21 243.53 197.21 244.36 C 197.21 245.17 197.44 245.85 197.91 246.40 C 198.37 246.94 198.95 247.39 199.66 247.73 C 200.37 248.08 201.11 248.36 201.86 248.58 L 204.32 249.29 C 205.08 249.51 205.84 249.78 206.60 250.10 C 207.35 250.43 208.04 250.84 208.67 251.33 C 209.29 251.82 209.80 252.41 210.17 253.11 C 210.55 253.81 210.74 254.65 210.74 255.62 C 210.74 256.89 210.41 258.02 209.76 259.03 C 209.10 260.03 208.16 260.83 206.94 261.41 C 205.71 262 204.25 262.29 202.55 262.29 Z M 265.75 250.94 C 265.75 254.09 261.03 254.09 261.03 250.94 C 261.03 247.79 265.75 247.79 265.75 250.94 Z M 320.26 261.89 L 313.76 238.35 L 316.06 238.35 L 320.24 253.97 C 320.43 254.67 320.61 255.39 320.78 256.12 C 320.96 256.85 321.13 257.58 321.29 258.32 C 321.46 259.06 321.62 259.82 321.76 260.59 L 321.47 260.59 C 321.62 259.82 321.78 259.06 321.95 258.32 C 322.11 257.58 322.28 256.85 322.46 256.12 C 322.64 255.39 322.82 254.67 323.01 253.97 L 327.18 238.35 L 329.82 238.35 L 333.97 253.97 C 334.17 254.67 334.35 255.39 334.53 256.12 C 334.70 256.85 334.87 257.58 335.05 258.32 C 335.21 259.06 335.38 259.82 335.53 260.59 L 335.21 260.59 C 335.36 259.82 335.53 259.06 335.69 258.32 C 335.85 257.58 336.03 256.85 336.21 256.12 C 336.39 255.39 336.57 254.67 336.75 253.97 L 340.92 238.35 L 343.24 238.35 L 336.72 261.89 L 334.03 261.89 L 329.75 246.13 C 329.48 245.16 329.23 244.14 328.98 243.05 C 328.73 241.96 328.49 240.76 328.25 239.44 L 328.73 239.44 C 328.5 240.71 328.26 241.87 328.03 242.93 C 327.79 244 327.53 245.06 327.24 246.13 L 322.97 261.89 Z M 357.66 261.89 L 357.66 238.35 L 371.40 238.35 L 371.40 240.36 L 359.90 240.36 L 359.90 249.04 L 370.67 249.04 L 370.67 251.05 L 359.90 251.05 L 359.90 259.87 L 371.61 259.87 L 371.61 261.89 Z M 387.97 261.89 L 387.97 238.35 L 390.22 238.35 L 390.22 259.87 L 401.41 259.87 L 401.41 261.89 Z M 415.87 261.89 L 415.87 238.35 L 418.13 238.35 L 418.13 259.87 L 429.31 259.87 L 429.31 261.89 Z M 443.48 261.89 L 443.48 238.35 L 446.07 238.35 L 456.78 254.34 C 457.08 254.78 457.42 255.30 457.79 255.89 C 458.16 256.48 458.54 257.12 458.95 257.81 C 459.35 258.51 459.76 259.24 460.16 260.00 L 459.79 260.00 C 459.73 259.21 459.68 258.46 459.65 257.73 C 459.62 256.99 459.60 256.30 459.58 255.66 C 459.57 255.01 459.57 254.44 459.57 253.93 L 459.57 238.35 L 461.81 238.35 L 461.81 261.89 L 459.20 261.89 L 449.19 247.01 C 448.80 246.41 448.41 245.80 448.01 245.18 C 447.62 244.56 447.19 243.86 446.73 243.08 C 446.26 242.29 445.71 241.37 445.08 240.30 L 445.52 240.30 C 445.55 241.26 445.59 242.16 445.62 243.01 C 445.65 243.85 445.67 244.61 445.70 245.28 C 445.72 245.96 445.73 246.53 445.73 246.99 L 445.73 261.89 Z M 478.22 261.89 L 478.22 238.35 L 491.97 238.35 L 491.97 240.36 L 480.46 240.36 L 480.46 249.04 L 491.23 249.04 L 491.23 251.05 L 480.46 251.05 L 480.46 259.87 L 492.18 259.87 L 492.18 261.89 Z M 515.94 262.29 C 514.33 262.29 512.94 262.02 511.75 261.49 C 510.56 260.96 509.62 260.21 508.95 259.26 C 508.27 258.31 507.89 257.20 507.80 255.94 L 510.10 255.94 C 510.17 256.87 510.48 257.65 511.01 258.29 C 511.54 258.93 512.24 259.42 513.09 259.75 C 513.95 260.08 514.90 260.25 515.94 260.25 C 517.10 260.25 518.14 260.05 519.04 259.66 C 519.94 259.27 520.65 258.73 521.17 258.03 C 521.69 257.32 521.94 256.51 521.94 255.59 C 521.94 254.80 521.74 254.14 521.33 253.62 C 520.93 253.09 520.36 252.64 519.62 252.27 C 518.89 251.90 518.03 251.58 517.05 251.29 L 514.26 250.48 C 512.39 249.93 510.94 249.16 509.93 248.17 C 508.92 247.19 508.42 245.95 508.42 244.46 C 508.42 243.18 508.76 242.07 509.44 241.10 C 510.12 240.13 511.04 239.37 512.21 238.83 C 513.37 238.29 514.68 238.02 516.14 238.02 C 517.62 238.02 518.93 238.29 520.06 238.83 C 521.19 239.38 522.09 240.12 522.75 241.06 C 523.41 242.00 523.77 243.07 523.82 244.26 L 521.62 244.26 C 521.49 242.97 520.92 241.94 519.91 241.17 C 518.89 240.41 517.62 240.03 516.08 240.03 C 515.01 240.03 514.06 240.22 513.23 240.59 C 512.41 240.97 511.76 241.48 511.30 242.13 C 510.84 242.78 510.61 243.53 510.61 244.36 C 510.61 245.17 510.84 245.85 511.30 246.40 C 511.76 246.94 512.35 247.39 513.06 247.73 C 513.77 248.08 514.51 248.36 515.26 248.58 L 517.72 249.29 C 518.48 249.51 519.24 249.78 520 250.10 C 520.75 250.43 521.44 250.84 522.07 251.33 C 522.69 251.82 523.19 252.41 523.57 253.11 C 523.95 253.81 524.14 254.65 524.14 255.62 C 524.14 256.89 523.81 258.02 523.16 259.03 C 522.50 260.03 521.56 260.83 520.33 261.41 C 519.11 262 517.65 262.29 515.94 262.29 Z M 546.71 262.29 C 545.10 262.29 543.70 262.02 542.51 261.49 C 541.33 260.96 540.39 260.21 539.71 259.26 C 539.04 258.31 538.66 257.20 538.57 255.94 L 540.86 255.94 C 540.94 256.87 541.25 257.65 541.78 258.29 C 542.31 258.93 543.00 259.42 543.86 259.75 C 544.72 260.08 545.67 260.25 546.71 260.25 C 547.87 260.25 548.90 260.05 549.80 259.66 C 550.71 259.27 551.42 258.73 551.94 258.03 C 552.45 257.32 552.71 256.51 552.71 255.59 C 552.71 254.80 552.51 254.14 552.10 253.62 C 551.69 253.09 551.12 252.64 550.39 252.27 C 549.66 251.90 548.80 251.58 547.82 251.29 L 545.03 250.48 C 543.15 249.93 541.71 249.16 540.70 248.17 C 539.69 247.19 539.19 245.95 539.19 244.46 C 539.19 243.18 539.53 242.07 540.21 241.10 C 540.89 240.13 541.81 239.37 542.98 238.83 C 544.14 238.29 545.45 238.02 546.91 238.02 C 548.39 238.02 549.70 238.29 550.83 238.83 C 551.96 239.38 552.86 240.12 553.52 241.06 C 554.18 242.00 554.53 243.07 554.58 244.26 L 552.39 244.26 C 552.26 242.97 551.69 241.94 550.67 241.17 C 549.66 240.41 548.39 240.03 546.85 240.03 C 545.78 240.03 544.83 240.22 544.00 240.59 C 543.18 240.97 542.53 241.48 542.07 242.13 C 541.61 242.78 541.38 243.53 541.38 244.36 C 541.38 245.17 541.61 245.85 542.07 246.40 C 542.53 246.94 543.12 247.39 543.83 247.73 C 544.54 248.08 545.27 248.36 546.02 248.58 L 548.49 249.29 C 549.25 249.51 550.00 249.78 550.76 250.10 C 551.52 250.43 552.21 250.84 552.83 251.33 C 553.46 251.82 553.96 252.41 554.33 253.11 C 554.71 253.81 554.90 254.65 554.90 255.62 C 554.90 256.89 554.58 258.02 553.92 259.03 C 553.26 260.03 552.33 260.83 551.10 261.41 C 549.88 262 548.41 262.29 546.71 262.29 Z M 608.48 250.94 C 608.48 254.09 603.76 254.09 603.76 250.94 C 603.76 247.79 608.48 247.79 608.48 250.94 Z M 658.66 261.89 L 658.66 238.35 L 672.36 238.35 L 672.36 240.36 L 660.91 240.36 L 660.91 249.29 L 671.27 249.29 L 671.27 251.30 L 660.91 251.30 L 660.91 261.89 Z M 688.23 261.89 L 688.23 238.35 L 701.97 238.35 L 701.97 240.36 L 690.47 240.36 L 690.47 249.04 L 701.23 249.04 L 701.23 251.05 L 690.47 251.05 L 690.47 259.87 L 702.18 259.87 L 702.18 261.89 Z M 724.87 262.29 C 723.26 262.29 721.87 262.02 720.68 261.49 C 719.49 260.96 718.56 260.21 717.88 259.26 C 717.20 258.31 716.82 257.20 716.73 255.94 L 719.03 255.94 C 719.11 256.87 719.41 257.65 719.94 258.29 C 720.48 258.93 721.17 259.42 722.03 259.75 C 722.89 260.08 723.83 260.25 724.87 260.25 C 726.03 260.25 727.07 260.05 727.97 259.66 C 728.87 259.27 729.58 258.73 730.10 258.03 C 730.62 257.32 730.88 256.51 730.88 255.59 C 730.88 254.80 730.67 254.14 730.26 253.62 C 729.86 253.09 729.29 252.64 728.56 252.27 C 727.82 251.90 726.96 251.58 725.98 251.29 L 723.20 250.48 C 721.32 249.93 719.87 249.16 718.86 248.17 C 717.85 247.19 717.35 245.95 717.35 244.46 C 717.35 243.18 717.69 242.07 718.37 241.10 C 719.05 240.13 719.97 239.37 721.14 238.83 C 722.30 238.29 723.62 238.02 725.07 238.02 C 726.55 238.02 727.86 238.29 729 238.83 C 730.13 239.38 731.02 240.12 731.68 241.06 C 732.34 242.00 732.70 243.07 732.75 244.26 L 730.55 244.26 C 730.42 242.97 729.85 241.94 728.84 241.17 C 727.83 240.41 726.55 240.03 725.01 240.03 C 723.94 240.03 722.99 240.22 722.17 240.59 C 721.34 240.97 720.70 241.48 720.24 242.13 C 719.77 242.78 719.54 243.53 719.54 244.36 C 719.54 245.17 719.77 245.85 720.23 246.40 C 720.69 246.94 721.28 247.39 721.99 247.73 C 722.71 248.08 723.44 248.36 724.19 248.58 L 726.65 249.29 C 727.41 249.51 728.17 249.78 728.92 250.10 C 729.68 250.43 730.37 250.84 731.00 251.33 C 731.62 251.82 732.12 252.41 732.50 253.11 C 732.88 253.81 733.07 254.65 733.07 255.62 C 733.07 256.89 732.74 258.02 732.08 259.03 C 731.43 260.03 730.49 260.83 729.27 261.41 C 728.05 262 726.58 262.29 724.87 262.29 Z M 747.09 240.36 L 747.09 238.35 L 764.25 238.35 L 764.25 240.36 L 756.80 240.36 L 756.80 261.89 L 754.55 261.89 L 754.55 240.36 Z M 782.55 238.35 L 782.55 261.89 L 780.30 261.89 L 780.30 238.35 Z M 806.61 261.89 L 797.91 238.35 L 800.27 238.35 L 805.86 253.73 C 806.16 254.55 806.50 255.54 806.89 256.71 C 807.27 257.89 807.71 259.27 808.19 260.85 L 807.70 260.85 C 808.18 259.23 808.62 257.84 809.00 256.69 C 809.39 255.53 809.72 254.55 810.01 253.73 L 815.51 238.35 L 817.89 238.35 L 809.25 261.89 Z M 830.46 261.89 L 839.09 238.35 L 841.74 238.35 L 850.45 261.89 L 848.08 261.89 L 842.48 246.50 C 842.17 245.64 841.83 244.64 841.46 243.50 C 841.08 242.36 840.66 240.98 840.17 239.37 L 840.64 239.37 C 840.16 241 839.73 242.39 839.35 243.55 C 838.96 244.70 838.63 245.68 838.34 246.50 L 832.85 261.89 Z M 834.48 254.89 L 834.48 252.90 L 846.43 252.90 L 846.43 254.89 Z M 865.58 261.89 L 865.58 238.35 L 867.83 238.35 L 867.83 259.87 L 879.01 259.87 L 879.01 261.89 Z M 865.58 261.89"/>
+  </defs>
+</svg>
+
+<div class="dirbar on-dark" role="navigation" aria-label="Direcciones">
+  <span>Dirección 4 · Ritual</span><i aria-hidden="true"></i><a href="../index.html">← Todas las direcciones</a>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Inicio">
+      <svg viewBox="30 24 842 192" fill="currentColor" role="img" aria-label="AORA"><use href="#lg-ara"/><use href="#lg-o"/></svg>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="#ritual">El ritual</a>
+      <a href="#programa">Programa</a>
+      <a href="#sede">Sede</a>
+      <a class="nav-cta" href="#entradas">Entradas</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+
+<!-- HERO -->
+<section class="hero" aria-labelledby="h-hero">
+  <svg class="hero__halo" viewBox="0 0 200 200" aria-hidden="true" data-speed="-12"><circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width=".35"/><circle cx="100" cy="100" r="78" fill="none" stroke="currentColor" stroke-width=".2"/></svg>
+  <div class="wrap">
+    <div class="hero__text">
+      <p class="hero__eyebrow label hero-in"><span>Fitness Wellness Festival</span><span>Primera edición · Febrero 2027</span></p>
+      <h1 class="display" id="h-hero">
+        <span class="ln hero-in">El momento es</span>
+        <svg class="hero-in" viewBox="30 24 842 192" fill="currentColor" role="img" aria-label="AORA"><use href="#lg-ara"/><use href="#lg-o"/></svg>
+      </h1>
+      <p class="hero__sub hero-in">2 días para moverte, cuidarte y vivir mejor.</p>
+      <div class="hero__ctas hero-in">
+        <a class="btn" href="#entradas">Quiero mi entrada <span class="arw" aria-hidden="true"></span></a>
+        <a class="btn btn--ghost" href="#ritual">Ver el ritual <span class="arw" aria-hidden="true"></span></a>
+      </div>
+    </div>
+    <div class="hero__media" id="heroMedia">
+      <div class="hero__frame">
+        <div class="tone"><img src="../fotos/arco-entrada.jpg" alt="Arco de entrada sobre la recta del autódromo, con atletas, banderas y montañas al fondo" decoding="async" fetchpriority="high"></div>
+        <svg class="ring-fallback" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <circle cx="50" cy="52" r="27" fill="none" stroke="#B8D0CC" stroke-opacity=".82" stroke-width="6.4"/>
+          <circle cx="50" cy="52" r="29.4" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width=".5"/>
+        </svg>
+        <canvas aria-hidden="true"></canvas>
+      </div>
+      <div class="hero__tag"><span class="label">Sede</span><strong>Autódromo de Tocancipá</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFIESTO -->
+<section class="manifest" aria-labelledby="h-man">
+  <div class="wrap">
+    <p class="manifest__label label"><span class="tick"></span>El ritual</p>
+    <div class="manifest__text">
+      <h2 id="h-man" class="split-words">El bienestar dejó de ser una rutina. Ahora es una cultura.</h2>
+    </div>
+    <p class="manifest__body reveal">Movimiento, comunidad, salud, naturaleza y aprendizaje en un mismo lugar. La gente ya no solo quiere hacer ejercicio: quiere participar, competir y pertenecer.</p>
+    <figure class="manifest__orb tone tone--cold" data-speed="-8"><img src="../fotos/meditacion.jpg" alt="Personas meditando entre eucaliptos con neblina" loading="lazy" decoding="async"></figure>
+    <ul class="axes reveal" aria-label="Ejes del festival">
+      <li><span>Fitness</span><span class="temp" style="background:var(--peach)"></span></li>
+      <li><span>Wellness</span><span class="temp" style="background:var(--sage)"></span></li>
+      <li><span>Community</span><span class="temp" style="background:var(--taupe)"></span></li>
+      <li><span>Culture</span><span class="temp" style="background:var(--olive)"></span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- RITUAL: CALOR / FRÍO -->
+<section class="ritual on-dark" id="ritual" aria-labelledby="h-rit">
+  <div class="rit-head">
+    <div class="wrap">
+      <h2 class="label" id="h-rit">Calor · Frío · Comunidad</h2>
+      <p>Así funciona un buen entrenamiento y así funciona el festival: esfuerzo, recuperación y la gente con la que compartes ambos.</p>
+    </div>
+  </div>
+  <div class="rit-pin" id="ritPin">
+    <article class="rit-stage s1">
+      <figure class="rit-media tone tone--warm"><img src="../fotos/rig-barra.jpg" alt="Atletas levantando barra frente a los rigs" loading="lazy" decoding="async"></figure>
+      <div class="rit-copy rit-copy--dark">
+        <span class="label">Move · Calor · Esfuerzo</span>
+        <h2>Muévete.</h2>
+        <p>Hybrid Challenge, Run 3K, calistenia para principiantes. El cuerpo trabaja; la cabeza se aquieta.</p>
+      </div>
+    </article>
+    <article class="rit-stage s2">
+      <figure class="rit-media tone tone--cold"><img src="../fotos/ice-recta.jpg" alt="Filas de tinas de hielo sobre la recta del autódromo" loading="lazy" decoding="async"></figure>
+      <div class="rit-copy rit-copy--frost">
+        <span class="label">Frío · Recuperación</span>
+        <h2>Recupérate.</h2>
+        <p>Ice immersion, movilidad, recovery station. Bajar la temperatura también es entrenar.</p>
+      </div>
+    </article>
+    <article class="rit-stage s3">
+      <figure class="rit-media tone"><img src="../fotos/noche-fogata.jpg" alt="Lounge nocturno con velas y amigos conversando" loading="lazy" decoding="async"></figure>
+      <div class="rit-copy rit-copy--dark">
+        <span class="label">Belong · Comunidad</span>
+        <h2>Pertenece.</h2>
+        <p>Coffee party, música en vivo, gastronomía saludable. El ritual termina con la gente.</p>
+      </div>
+    </article>
+    <svg class="rit-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <line id="ritLine" x1="112" y1="0" x2="102" y2="100" stroke="#F9F7F2" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <div class="rit-tags" id="ritTags" aria-hidden="true"><span class="warm">← Calor</span><span class="cold">Frío →</span></div>
+    <canvas class="rit-ring" id="ritRing" aria-hidden="true"></canvas>
+    <ol class="rit-steps" id="ritSteps" aria-hidden="true"><li class="on">Muévete</li><li>Recupérate</li><li>Pertenece</li></ol>
+  </div>
+</section>
+
+<!-- PROGRAMA -->
+<section class="program" id="programa" aria-labelledby="h-prog">
+  <div class="wrap">
+    <div class="program__head">
+      <p class="label"><span class="tick"></span>Programa</p>
+      <h2 class="h2 reveal" id="h-prog">Dos temperaturas. Un mismo lugar.</h2>
+      <p class="reveal">El programa alterna esfuerzo y recuperación, como cualquier buen entrenamiento. Entre uno y otro, la conversación.</p>
+    </div>
+    <div class="temps">
+      <div class="temp-col temp-col--warm reveal">
+        <figure class="shape shape--peak tone tone--warm"><img src="../fotos/hybrid-pista.jpg" alt="Rigs de entrenamiento con la tribuna llena" loading="lazy" decoding="async"></figure>
+        <div class="bar"></div>
+        <span class="label">Calor</span>
+        <h3 class="h3">Esfuerzo</h3>
+        <ul>
+          <li><strong>Run 3K AORA</strong><span>Para empezar</span></li>
+          <li><strong>AORA Hybrid Challenge</strong><span>Para competir</span></li>
+          <li><strong>2K Kids</strong><span>Niños y niñas</span></li>
+          <li><strong>Calistenia</strong><span>Para principiantes</span></li>
+        </ul>
+      </div>
+      <div class="temp-col temp-col--cold reveal">
+        <figure class="shape shape--ring" style="position:relative">
+          <div class="tone tone--cold" style="position:absolute;inset:0;border-radius:50%"><img src="../fotos/zona-wellness.jpg" alt="Zona wellness con tinas de hielo y mats" loading="lazy" decoding="async" style="object-position:62% 60%"></div>
+          <span class="frost-disc" aria-hidden="true"></span>
+        </figure>
+        <div class="bar"></div>
+        <span class="label">Frío</span>
+        <h3 class="h3">Recuperación</h3>
+        <ul>
+          <li><strong>Ice immersion</strong><span>Recovery</span></li>
+          <li><strong>Movilidad</strong><span>Recovery</span></li>
+          <li><strong>Recovery station</strong><span>Recovery</span></li>
+          <li><strong>Yoga, pilates, meditación</strong><span>Wellness</span></li>
+        </ul>
+      </div>
+      <div class="temp-col temp-col--mild reveal">
+        <figure class="shape shape--diag tone"><img src="../fotos/dj-afrohouse.jpg" alt="Tarima de madera con público bailando al atardecer" loading="lazy" decoding="async"></figure>
+        <div class="bar"></div>
+        <span class="label">Templado</span>
+        <h3 class="h3">Encuentro</h3>
+        <ul>
+          <li><strong>Talks y workshops</strong><span>Performance, nutrición, hábitos</span></li>
+          <li><strong>Coffee party</strong><span>Y networking</span></li>
+          <li><strong>Música en vivo</strong><span>DJs y arte</span></li>
+          <li><strong>Gastronomía saludable</strong><span>Brand village</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUIÉN -->
+<section class="who" aria-labelledby="h-who">
+  <div class="wrap">
+    <div class="who__aside">
+      <p class="label"><span class="tick"></span>Para quién</p>
+      <h2 class="h2 reveal" id="h-who">Cada quien llega por algo distinto.</h2>
+      <p class="reveal">Del más intenso al más tranquilo. Encuentra tu temperatura y empieza por ahí.</p>
+      <figure class="who__photo tone reveal"><img src="../fotos/yoga.jpg" alt="Clase de yoga sobre tarima de madera al atardecer" loading="lazy" decoding="async"></figure>
+    </div>
+    <div class="who__right">
+      <ul class="who__list">
+        <li style="--w:100%"><span class="p">Atleta</span><span class="e">Hybrid Challenge</span></li>
+        <li style="--w:88%"><span class="p">Fitness lover</span><span class="e">Calistenia</span></li>
+        <li style="--w:76%"><span class="p">Principiante</span><span class="e">3K</span></li>
+        <li style="--w:64%"><span class="p">Niños y niñas</span><span class="e">2K Kids</span></li>
+        <li style="--w:52%"><span class="p">Explorador de marcas</span><span class="e">Brand village</span></li>
+        <li style="--w:40%"><span class="p">Social</span><span class="e">Coffee party</span></li>
+        <li style="--w:28%"><span class="p">Mente curiosa</span><span class="e">Stage · talks</span></li>
+        <li style="--w:14%"><span class="p">Wellness lover</span><span class="e">Yoga + pilates</span></li>
+        <li style="--w:0%"><span class="p">Recovery seeker</span><span class="e">Recovery + ice</span></li>
+      </ul>
+      <div class="who__scale label" aria-hidden="true"><span>Más calor</span><span>Más calma</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LEMA -->
+<section class="motto" aria-label="Lema">
+  <svg class="ringdeco" viewBox="0 0 200 200" aria-hidden="true" data-rotate="1"><circle cx="100" cy="100" r="97" fill="none" stroke="currentColor" stroke-width=".4" stroke-dasharray=".6 2.4"/><circle cx="100" cy="100" r="88" fill="none" stroke="currentColor" stroke-width=".25"/></svg>
+  <p class="split-words">Más que un evento, un movimiento.</p>
+</section>
+
+<!-- SEDE -->
+<section class="venue" id="sede" aria-labelledby="h-sede">
+  <div class="venue__img">
+    <div class="tone tone--cold" data-parallax><img src="../fotos/autodromo-amanecer.jpg" alt="Vista del Autódromo de Tocancipá al amanecer, con luces y montañas" loading="lazy" decoding="async"></div>
+    <svg class="venue__dial" viewBox="0 0 200 200" aria-hidden="true" data-rotate="-1"><circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width=".5" stroke-dasharray=".5 3.2"/><circle cx="100" cy="100" r="70" fill="none" stroke="currentColor" stroke-width=".35"/><path d="M100 4 L100 22" stroke="#FFA38B" stroke-width="1.2"/></svg>
+  </div>
+  <div class="wrap" style="padding-left:0">
+    <div class="venue__card reveal">
+      <p class="label"><span class="tick"></span>Sede</p>
+      <h2 class="h2" id="h-sede">Un escenario icónico en el corazón de Colombia.</h2>
+      <p class="lead" style="margin-top:24px;max-width:36ch">Autódromo de Tocancipá, en Cundinamarca, a las afueras de Bogotá.</p>
+      <div class="venue__meta">
+        <div><span class="label">Cuándo</span><strong>Febrero 2027</strong></div>
+        <div><span class="label">Duración</span><strong>2 días</strong></div>
+        <div><span class="label">Dónde</span><strong>Tocancipá, Cundinamarca</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTRADAS -->
+<section class="tickets on-dark" id="entradas" aria-labelledby="h-tix">
+  <svg class="tickets__o" viewBox="236 24 214 192" fill="currentColor" aria-hidden="true"><use href="#lg-o"/></svg>
+  <div class="wrap">
+    <div class="tickets__head">
+      <p class="label">Entradas</p>
+      <h2 class="h2 reveal" id="h-tix">Las entradas salen por KOBAII.</h2>
+      <p class="reveal">KOBAII es la tiquetera oficial. Crea tu cuenta hoy y quedas listo para el lanzamiento.</p>
+      <span class="tickets__note label">La venta aún no abre</span>
+    </div>
+    <ol class="steps">
+      <li class="reveal"><span class="n">1</span><div><h3>Crea tu cuenta en kobaii.co</h3><p>Es el único paso que depende de ti.</p></div></li>
+      <li class="reveal"><span class="n">2</span><div><h3>Quedas en la lista de espera</h3><p>Te avisamos cuando abra el lanzamiento oficial.</p></div></li>
+      <li class="reveal"><span class="n">3</span><div><h3>Beneficios sorpresa</h3><p>Se anuncian en las próximas semanas.</p></div></li>
+    </ol>
+    <div class="tickets__cta">
+      <a class="btn btn--peach btn--xl btn--diag" href="https://kobaii.co" target="_blank" rel="noopener noreferrer">Crear mi cuenta en KOBAII <span class="arw" aria-hidden="true"></span><span class="sr">(abre en una pestaña nueva)</span></a>
+      <small>Se abre kobaii.co en una pestaña nueva. La venta aún no abre: hoy solo creas tu cuenta.</small>
+    </div>
+  </div>
+</section>
+
+<!-- NOVEDADES + MARCAS -->
+<section class="join on-dark" aria-label="Novedades y marcas">
+  <div class="wrap">
+    <form class="join__form" id="newsForm" novalidate>
+      <p class="label">Novedades</p>
+      <h3 class="h3">Te avisamos primero.</h3>
+      <p>Anuncios, horarios y beneficios del festival, directo a tu correo. Sin ruido.</p>
+      <div class="fields">
+        <div class="field"><label for="f-name">Nombre</label><input id="f-name" name="nombre" type="text" autocomplete="given-name" required></div>
+        <div class="field"><label for="f-mail">Correo</label><input id="f-mail" name="correo" type="email" autocomplete="email" required></div>
+        <div class="field field--full"><label for="f-city">Ciudad <span style="text-transform:none;letter-spacing:0;font-weight:400">(opcional)</span></label><input id="f-city" name="ciudad" type="text" autocomplete="address-level2"></div>
+        <label class="check"><input type="checkbox" name="autorizo"><span>Autorizo el tratamiento de mis datos personales para recibir novedades del festival.</span></label>
+        <div class="form-foot">
+          <button class="btn" type="submit">Unirme a la lista <span class="arw" aria-hidden="true"></span></button>
+          <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </form>
+    <div class="join__brands">
+      <p class="label">Para marcas</p>
+      <h3 class="h3">Entra desde la primera edición.</h3>
+      <p>Tenemos paquetes de patrocinio de Activation a Presenting Partner. Escríbenos y armamos el que tenga sentido para tu marca.</p>
+      <a class="mail" href="mailto:valeri@aorawellness.com">valeri@aorawellness.com</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot on-dark">
+  <div class="wrap">
+    <p class="foot__motto">2 días para moverte, cuidarte y vivir mejor.</p>
+    <svg class="foot__logo" viewBox="24 24 860 244" fill="currentColor" role="img" aria-label="AORA Fitness Wellness Festival"><use href="#lg-ara"/><use href="#lg-o"/><use href="#lg-desc"/></svg>
+    <div class="foot__row">
+      <span>AORA WELLNESS SAS · NIT 901.994.619-1 · Bogotá D.C.</span>
+      <a href="https://instagram.com/aorawellnessfest" target="_blank" rel="noopener noreferrer">Instagram @aorawellnessfest</a>
+      <span>Imágenes ilustrativas.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  /* Formulario: solo UI */
+  var form = document.getElementById('newsForm');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    document.getElementById('formMsg').textContent = 'Vista previa: aún no envía datos';
+  });
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* =====================================================================
+     Anillo líquido (WebGL): la O como superficie de agua/hielo.
+     Temperatura por píxel: cálida (peach) ↔ fría (ice). La mano calienta.
+     ===================================================================== */
+  var VS = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  var FS = [
+  '#ifdef GL_FRAGMENT_PRECISION_HIGH','precision highp float;','#else','precision mediump float;','#endif',
+  'uniform vec2 uRes,uCenter,uMouse,uFocus;uniform vec3 uLine;',
+  'uniform float uR,uTh,uAmp,uTime,uTempBase,uBal,uLineOn,uTexOn,uTexAspect,uDpr,uMouseOn,uVel,uShift;',
+  'uniform sampler2D uTex;',
+  'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+  'float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}',
+  'float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*noise(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}',
+  'vec3 tone(vec3 c){float l=dot(c,vec3(.299,.587,.114));vec3 sh=vec3(.13,.22,.22),md=vec3(.56,.62,.58),hi=vec3(1.,.89,.82);',
+  ' vec3 g=mix(mix(sh,md,clamp(l*2.,0.,1.)),mix(md,hi,clamp(l*2.-1.,0.,1.)),step(.5,l));vec3 d=mix(vec3(l),c,.6);return mix(d,g,.55);}',
+  'vec2 cover(vec2 s){float ca=uRes.x/uRes.y;vec2 uv=s;',
+  ' if(ca<uTexAspect){float f=ca/uTexAspect;uv.x=clamp(uFocus.x,f*.5,1.-f*.5)+(s.x-.5)*f;}',
+  ' else{float f=uTexAspect/ca;uv.y=clamp(uFocus.y+uShift,f*.5,1.-f*.5)+(s.y-.5)*f;}return uv;}',
+  'vec3 tex(vec2 uv){return tone(texture2D(uTex,clamp(uv,.001,.999)).rgb);}',
+  'void main(){',
+  ' vec2 P=gl_FragCoord.xy;vec2 s=P/uRes;vec2 p=P-uCenter;float r=length(p);vec2 dir=p/max(r,.001);',
+  ' vec3 bg=vec3(0.);vec2 uv=cover(s);',
+  ' if(uTexOn>.5){bg=tex(uv);bg+=(hash(P*.73+fract(uTime*3.1))-.5)*.045;}',
+  ' vec3 col=bg;float a=uTexOn;',
+  ' float band=uTh*1.3+uR*uAmp*(1.6+uVel*3.)+50.*uDpr;',
+  ' if(abs(r-uR)<band){',
+  '  float n=fbm(dir*1.6+vec2(uTime*.09,-uTime*.06));',
+  '  float n2=fbm(p/max(uR,1.)*1.3+vec2(-uTime*.12,uTime*.08));',
+  '  float amp=uAmp*(1.+uVel*2.5);',
+  '  vec2 m=P-uMouse;float mb=exp(-dot(m,m)/(2.*pow(uR*.5+60.*uDpr,2.)))*uMouseOn;',
+  '  float disp=((n-.5)*.8+(n2-.5)*.6)*amp*uR-mb*uTh*.9;',
+  '  float t=(r+disp-uR)/uTh;',
+  '  float aa=1.4*uDpr/uTh;',
+  '  float body=1.-smoothstep(1.-aa,1.+aa,abs(t));',
+  '  float sideT=mix(uTempBase,smoothstep(-34.*uDpr,34.*uDpr,dot(uLine.xy,P)+uLine.z),uLineOn);',
+  '  float ang=uTime*.22;float balT=.5+.5*dot(dir,vec2(cos(ang),sin(ang)));',
+  '  float T=clamp(mix(sideT,balT,uBal)-mb*.85,0.,1.);',
+  '  vec3 warm=vec3(1.,.64,.545);vec3 ice=vec3(.70,.85,.84);',
+  '  vec3 tint=mix(warm,ice,T)+vec3(.05)*(1.-abs(T-.5)*2.);',
+  '  float h=sqrt(max(0.,1.-t*t));vec3 N=normalize(vec3(dir*t,h*.9+.04));',
+  '  vec3 L=normalize(vec3(-.45,.62,.72));float diff=dot(N,L)*.5+.5;',
+  '  vec3 H=normalize(L+vec3(0.,0.,1.));float spec=pow(max(dot(N,H),0.),70.);',
+  '  float fres=pow(1.-N.z,2.2);',
+  '  float caus=pow(fbm(p/max(uR,1.)*4.+vec2(uTime*.25,-uTime*.18)),3.)*1.6;',
+  '  if(uTexOn>.5){',
+  '   vec2 off=N.xy*(uTh*1.25)/uRes;vec2 b=vec2(2.5*uDpr)/uRes;',
+  '   vec3 rf=(tex(uv+off+b)+tex(uv+off-b)+tex(uv+off+vec2(b.x,-b.y))+tex(uv+off+vec2(-b.x,b.y)))*.25;',
+  '   vec3 c=mix(rf,tint,.34+.12*(1.-T));c=c*(.82+.3*diff)+spec*.95+fres*.24+caus*.12;',
+  '   col=mix(bg,c,body);',
+  '   float rim=exp(-pow((abs(t)-1.15)*3.,2.))*.22;col+=rim*vec3(1.)*(1.-body);',
+  '  }else{',
+  '   vec3 c=tint*(.6+.42*diff)+spec*.9+fres*.32+caus*.1;',
+  '   float al=body*clamp(.62+.3*fres+spec+caus*.08,0.,1.);',
+  '   float glow=exp(-pow(max(abs(t)-1.,0.)*1.4,2.))*(1.-body)*.18;',
+  '   col=c*al+tint*glow;a=al+glow;',
+  '  }',
+  ' }',
+  ' if(uTexOn>.5) gl_FragColor=vec4(col,1.); else gl_FragColor=vec4(col,a);',
+  '}'].join('\n');
+
+  function Ring(canvas, opts){
+    var gl;
+    try{ gl = canvas.getContext('webgl',{alpha:true,premultipliedAlpha:true,antialias:false}) || canvas.getContext('experimental-webgl'); }catch(e){ gl=null; }
+    if(!gl) return null;
+    function sh(type,src){var s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){console.warn(gl.getShaderInfoLog(s));return null;}return s;}
+    var vs=sh(gl.VERTEX_SHADER,VS), fs=sh(gl.FRAGMENT_SHADER,FS); if(!vs||!fs) return null;
+    var pr=gl.createProgram();gl.attachShader(pr,vs);gl.attachShader(pr,fs);gl.linkProgram(pr);
+    if(!gl.getProgramParameter(pr,gl.LINK_STATUS)) return null;
+    gl.useProgram(pr);
+    var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var loc=gl.getAttribLocation(pr,'a');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    var U={};['uRes','uCenter','uMouse','uFocus','uLine','uR','uTh','uAmp','uTime','uTempBase','uBal','uLineOn','uTexOn','uTexAspect','uDpr','uMouseOn','uVel','uShift','uTex'].forEach(function(n){U[n]=gl.getUniformLocation(pr,n);});
+    gl.clearColor(0,0,0,0);
+    var self={gl:gl,ready:!opts.src,w:1,h:1,dpr:1,
+      s:{cx:.5,cy:.5,R:100,th:12,amp:.05,temp:.7,bal:0,lineOn:0,line:[0,0,0],mx:-9999,my:-9999,mOn:0,vel:0,shift:0,focus:[.5,.5]}};
+    var texAspect=1;
+    if(opts.src){
+      var img=new Image();
+      img.onload=function(){
+        var t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+        try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);}catch(e){return;}
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+        texAspect=img.naturalWidth/img.naturalHeight;self.ready=true;self.render(0);opts.onReady&&opts.onReady();
+      };
+      img.src=opts.src;
+    }
+    self.resize=function(){
+      var d=Math.min(window.devicePixelRatio||1,opts.dprMax||1.5);
+      var w=canvas.clientWidth,h=canvas.clientHeight;
+      self.w=w;self.h=h;self.dpr=d;canvas.width=Math.max(1,Math.round(w*d));canvas.height=Math.max(1,Math.round(h*d));
+      gl.viewport(0,0,canvas.width,canvas.height);
+    };
+    self.render=function(time){
+      if(!self.ready) return;
+      var s=self.s,d=self.dpr;
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.uniform2f(U.uRes,canvas.width,canvas.height);
+      gl.uniform2f(U.uCenter,s.cx*d,(self.h-s.cy)*d);
+      gl.uniform2f(U.uMouse,s.mx*d,(self.h-s.my)*d);
+      gl.uniform2f(U.uFocus,s.focus[0],s.focus[1]);
+      gl.uniform3f(U.uLine,s.line[0],s.line[1],s.line[2]);
+      gl.uniform1f(U.uR,s.R*d);gl.uniform1f(U.uTh,s.th*d);gl.uniform1f(U.uAmp,s.amp);
+      gl.uniform1f(U.uTime,time);gl.uniform1f(U.uTempBase,s.temp);gl.uniform1f(U.uBal,s.bal);gl.uniform1f(U.uLineOn,s.lineOn);
+      gl.uniform1f(U.uTexOn,opts.src?1:0);gl.uniform1f(U.uTexAspect,texAspect);gl.uniform1f(U.uDpr,d);
+      gl.uniform1f(U.uMouseOn,s.mOn);gl.uniform1f(U.uVel,s.vel);gl.uniform1f(U.uShift,s.shift);gl.uniform1i(U.uTex,0);
+      gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    };
+    /* línea divisoria en coordenadas CSS (y hacia abajo) → ecuación en píxeles GL */
+    self.setLine=function(xa,xb){
+      var d=self.dpr,H=self.h*d,ax=xa*d,bx=xb*d;
+      var nx=H,ny=(bx-ax),len=Math.hypot(nx,ny)||1;nx/=len;ny/=len;
+      self.s.line=[nx,ny,-(nx*ax+ny*H)];
+    };
+    return self;
+  }
+
+  /* Pointer tracking helper */
+  function track(el, ring){
+    el.addEventListener('pointermove',function(e){var r=el.getBoundingClientRect();ring.s.mx=e.clientX-r.left;ring.s.my=e.clientY-r.top;ring._mT=1;});
+    el.addEventListener('pointerleave',function(){ring._mT=0;});
+  }
+
+  /* ---------- Hero ring ---------- */
+  var heroMedia=document.getElementById('heroMedia');
+  var heroCanvas=heroMedia.querySelector('canvas');
+  var hero=Ring(heroCanvas,{src:'../fotos/arco-entrada.jpg',dprMax:1.5,onReady:function(){heroMedia.classList.add('gl-on');}});
+  function layoutHero(){
+    if(!hero) return; hero.resize();
+    var w=hero.w,h=hero.h,m=Math.min(w,h);
+    hero.base={R:m*.27,th:m*.27*.13};
+    hero.s.cx=w*.5;hero.s.cy=h*.52;hero.s.R=hero.base.R;hero.s.th=hero.base.th;
+    hero.s.temp=.78;hero.s.amp=.05;hero.s.focus=[.5,.55];
+  }
+  if(hero){ layoutHero(); track(heroMedia,hero); hero._mT=0; }
+
+  /* ---------- Ritual ring ---------- */
+  var ritCanvas=document.getElementById('ritRing');
+  var useMotion=!reduced && window.gsap && window.ScrollTrigger;
+  var rit=null;
+  if(useMotion){
+    document.documentElement.classList.add('motion');
+    rit=Ring(ritCanvas,{dprMax:1.25});
+  }
+
+  /* ---------- Loop (solo cuando hay algo visible) ---------- */
+  var visible={hero:true,rit:false};
+  var lastY=window.scrollY,vel=0,t0=performance.now(),running=false;
+  function frame(now){
+    var dt=Math.max(16,now-(frame.last||now));frame.last=now;
+    var y=window.scrollY;var v=Math.min(Math.abs(y-lastY)/dt,4);lastY=y;vel+=(v*.35-vel)*.08;
+    var time=(now-t0)/1000;
+    if(hero&&visible.hero){
+      hero.s.mOn+=((hero._mT||0)-hero.s.mOn)*.06;hero.s.vel=vel;
+      var hp=Math.min(1,y/Math.max(1,window.innerHeight));
+      hero.s.R=hero.base.R*(1+hp*.22);hero.s.shift=-hp*.06;hero.s.temp=.78-hp*.5;
+      hero.render(time);
+    }
+    if(rit&&visible.rit){ rit.s.mOn+=((rit._mT||0)-rit.s.mOn)*.06;rit.s.vel=vel;rit.render(time); }
+    if(!reduced) requestAnimationFrame(frame); else running=false;
+  }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.target===heroMedia) visible.hero=e.isIntersecting; else visible.rit=e.isIntersecting;
+    });},{rootMargin:'100px'});
+    io.observe(heroMedia); if(rit) io.observe(ritCanvas);
+  }
+  if(reduced){
+    if(hero){ var once=setInterval(function(){ if(hero.ready){ hero.render(2.0); clearInterval(once);} },120); }
+  } else { requestAnimationFrame(frame); }
+  window.addEventListener('resize',function(){ layoutHero(); if(hero&&reduced) hero.render(2.0); });
+
+  if(!useMotion) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ---------- Entrada del hero ---------- */
+  gsap.from('.hero-in',{y:36,opacity:0,duration:1.3,ease:'expo.out',stagger:.09,delay:.1});
+  gsap.from('.hero__frame',{scale:.94,opacity:0,duration:1.6,ease:'expo.out',delay:.15});
+  gsap.from('.hero__tag',{x:-30,opacity:0,duration:1.2,ease:'expo.out',delay:.6});
+
+  /* ---------- Parallax ---------- */
+  gsap.utils.toArray('[data-speed]').forEach(function(el){
+    gsap.to(el,{yPercent:parseFloat(el.dataset.speed),ease:'none',scrollTrigger:{trigger:el.closest('section'),start:'top bottom',end:'bottom top',scrub:true}});
+  });
+  gsap.utils.toArray('[data-rotate]').forEach(function(el){
+    gsap.fromTo(el,{rotate:-40*el.dataset.rotate},{rotate:40*el.dataset.rotate,ease:'none',scrollTrigger:{trigger:el.parentNode,start:'top bottom',end:'bottom top',scrub:true}});
+  });
+
+  /* ---------- Palabras que toman temperatura ---------- */
+  gsap.utils.toArray('.split-words').forEach(function(el){
+    var words=el.textContent.trim().split(/\s+/);
+    el.setAttribute('aria-label',el.textContent.trim());
+    el.innerHTML=words.map(function(w){return '<span class="w" aria-hidden="true">'+w+'</span>';}).join(' ');
+    gsap.fromTo(el.querySelectorAll('.w'),{opacity:.16},{opacity:1,stagger:.1,ease:'none',scrollTrigger:{trigger:el,start:'top 82%',end:'bottom 45%',scrub:.6}});
+  });
+
+  /* ---------- Revelados ---------- */
+  ScrollTrigger.batch('.reveal',{start:'top 88%',once:true,onEnter:function(b){gsap.from(b,{y:48,opacity:0,duration:1.2,ease:'expo.out',stagger:.1,overwrite:true});}});
+  gsap.fromTo('.venue__img [data-parallax]',{yPercent:0},{yPercent:10,ease:'none',scrollTrigger:{trigger:'.venue__img',start:'top bottom',end:'bottom top',scrub:true}});
+
+  /* =====================================================================
+     MOMENTO PRINCIPAL: Calor / Frío
+     Una diagonal (la pierna de la R) barre de calor a frío.
+     Luego la O se abre como círculo y aparece la comunidad.
+     ===================================================================== */
+  var pin=document.getElementById('ritPin');
+  var m2=pin.querySelector('.s2 .rit-media'), m3=pin.querySelector('.s3 .rit-media');
+  var c1=pin.querySelector('.s1 .rit-copy'), c2=pin.querySelector('.s2 .rit-copy'), c3=pin.querySelector('.s3 .rit-copy');
+  var line=document.getElementById('ritLine'), tags=document.getElementById('ritTags');
+  var stepsLi=document.querySelectorAll('#ritSteps li');
+  var st={d:112,circ:0,bal:0};
+  var geo={};
+  function layoutRit(){
+    var w=pin.clientWidth,h=pin.clientHeight,mobile=w<700;
+    geo.w=w;geo.h=h;geo.cx=w*(mobile?.5:.64);geo.cy=h*(mobile?.34:.44);
+    geo.R0=Math.min(w,h)*(mobile?.27:.2);geo.th=geo.R0*.13;
+    geo.Rmax=Math.hypot(Math.max(geo.cx,w-geo.cx),Math.max(geo.cy,h-geo.cy))+geo.th*2+20;
+    geo.slope=mobile?14:10;
+    if(rit){rit.resize();}
+    apply();
+  }
+  function apply(){
+    var xa=st.d+geo.slope, xb=st.d-geo.slope;
+    m2.style.clipPath='polygon('+xa+'% 0, 100% 0, 100% 100%, '+xb+'% 100%)';
+    line.setAttribute('x1',xa);line.setAttribute('x2',xb);
+    var lineVis=st.d>-geo.slope-2&&st.d<100+geo.slope+2;
+    line.style.opacity=lineVis?1:0;
+    tags.style.transform='translateX('+(st.d/100*geo.w)+'px) translateX(-50%)';
+    tags.style.opacity=(st.d<98&&st.d>2)?1:0;
+    var e=st.circ*st.circ*(3-2*st.circ);
+    var R=geo.R0+(geo.Rmax-geo.R0)*e;
+    var clipR=Math.max(0,(R-geo.th*.4)*Math.min(1,st.circ*6));
+    m3.style.clipPath='circle('+clipR.toFixed(1)+'px at '+geo.cx.toFixed(1)+'px '+geo.cy.toFixed(1)+'px)';
+    if(rit){
+      rit.s.cx=geo.cx;rit.s.cy=geo.cy;rit.s.R=R;rit.s.th=geo.th*(1+e*.4);
+      rit.s.amp=.06*geo.R0/R;rit.s.bal=st.bal;rit.s.lineOn=1;rit.s.temp=0;
+      rit.setLine(xa/100*geo.w,xb/100*geo.w);
+      if(reduced) rit.render(1);
+    }
+    var stage=st.circ>.35?2:(st.d<45?1:0);
+    stepsLi.forEach(function(li,i){li.classList.toggle('on',i===stage);});
+  }
+  if(rit){ track(pin,rit); rit._mT=0; }
+  layoutRit();
+  var tl=gsap.timeline({defaults:{ease:'power2.inOut'},onUpdate:apply,
+    scrollTrigger:{trigger:pin,start:'top top',end:'+=340%',pin:true,scrub:.9,anticipatePin:1,invalidateOnRefresh:true,onRefresh:layoutRit}});
+  tl.to(st,{d:-14,duration:3.6,ease:'sine.inOut'},1)
+    .to(c1,{autoAlpha:0,y:-28,duration:.7},2.0)
+    .fromTo(c2,{autoAlpha:0,y:34},{autoAlpha:1,y:0,duration:.8},3.4)
+    .to(st,{circ:1,duration:3.2},5.6)
+    .to(st,{bal:1,duration:2.2},5.9)
+    .to(c2,{autoAlpha:0,y:-28,duration:.7},5.8)
+    .fromTo(c3,{autoAlpha:0,y:34},{autoAlpha:1,y:0,duration:.8},7.7)
+    .to({},{duration:1.4},8.8);
+
+  window.addEventListener('load',function(){ScrollTrigger.refresh();});
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ScrollTrigger.refresh();});
+})();
+</script>
+</body>
+</html>
