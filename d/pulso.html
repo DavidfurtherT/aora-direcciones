@@ -685,7 +685,7 @@ function initPortal() {
   const shapes = svgData.paths.flatMap(p => SVGLoader.createShapes(p));
   const araGeo = new THREE.ExtrudeGeometry(shapes, { depth: 22, bevelEnabled: true, bevelThickness: 5, bevelSize: 2.2, bevelSegments: MOBILE ? 2 : 5, curveSegments: MOBILE ? 8 : 18 });
   araGeo.translate(-OX, -OY, -11);
-  const araMat = new THREE.MeshPhysicalMaterial({ color: 0x142323, metalness: 0.5, roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.16, envMapIntensity: MOBILE ? 0.7 : 0.32 });
+  const araMat = new THREE.MeshPhysicalMaterial({ color: 0x3a4a46, emissive: new THREE.Color(0xF9F7F2), emissiveIntensity: 0, metalness: 0.35, roughness: 0.3, clearcoat: 1, clearcoatRoughness: 0.16, envMapIntensity: MOBILE ? 0.7 : 0.32 });
   const ara = new THREE.Mesh(araGeo, araMat);
   ara.scale.set(S, -S, S);
 
@@ -865,6 +865,7 @@ function initPortal() {
     if (!visible) return;
     const { kick, phase } = beat;
     // pulso en el anillo
+    araMat.emissiveIntensity = fx.fade * (MOBILE ? 1.5 : 0.85);
     ringMat.emissiveIntensity = fx.glow * (2.1 + kick * 4.2) * (MOBILE ? 0.6 : 1);
     ring.scale.set(1 + kick * 0.03, 0.903 * (1 + kick * 0.03), 1 + kick * 0.03);
     haloMat.uniforms.uKick.value = kick; haloMat.uniforms.uAmp.value = fx.glow * (MOBILE ? 2.6 : 0.6);

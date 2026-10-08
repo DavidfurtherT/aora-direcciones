@@ -119,8 +119,10 @@ html.gl .hero__logo{position:absolute;width:1px;height:1px;overflow:hidden;clip:
 .hero__fallback{position:relative;z-index:1;display:flex;gap:var(--s-2);padding:var(--s-4) var(--gut) var(--s-5)}
 .hero__fallback img{width:calc((100% - 2 * var(--s-2))/3);aspect-ratio:1;object-fit:cover;border-radius:50%;filter:saturate(.75) contrast(1.05)}
 html.gl .hero__fallback{display:none}
-.hero__b{position:absolute;z-index:2;left:var(--gut);top:calc(84px + var(--s-3));max-width:min(34rem,86vw);pointer-events:none;visibility:hidden}
+.hero__b{position:absolute;z-index:2;isolation:isolate;left:var(--gut);top:calc(84px + var(--s-3));max-width:min(34rem,86vw);pointer-events:none;visibility:hidden}
 html:not(.js) .hero__b{display:none}
+.hero__b::before{content:"";position:absolute;z-index:-1;left:calc(var(--gut) * -1);right:calc(var(--gut) * -1);top:-140px;bottom:-56px;background:linear-gradient(to bottom,var(--bg) 0%,var(--bg) 78%,rgba(26,37,36,0) 100%);pointer-events:none}
+@media (min-width: 901px){.hero__b::before{right:-30%;background:radial-gradient(120% 90% at 20% 40%,var(--bg) 55%,rgba(26,37,36,0) 100%)}}
 .hero__bt{font-family:var(--f-d);font-weight:700;font-size:var(--t-xl);letter-spacing:-.035em;line-height:.98;margin-top:var(--s-2)}
 .hero__bh{margin-top:var(--s-2);color:var(--mute);max-width:24rem}
 .hero__band{position:relative;z-index:3;display:grid;grid-template-columns:1fr auto auto;align-items:end;gap:var(--s-4);padding:var(--s-3) var(--gut) calc(var(--s-4) + 28px);background:var(--bg)}
@@ -663,7 +665,7 @@ async function initGL(){
     renderer.setSize(W, Hh, false);
     camera.aspect = W/Hh;
     const visW = 2*D*Math.tan(THREE.MathUtils.degToRad(18))*camera.aspect;
-    fit = clamp(visW*.7/5.2, .48, 1.05);
+    fit = camera.aspect < .8 ? clamp(visW*.88/5.2, .4, 1) : clamp(visW*.7/5.2, .48, 1.05);
     world.scale.setScalar(fit);
     const off = (band.offsetHeight - 70) * .5;
     camera.setViewOffset(W, Hh, 0, Math.max(0, off), W, Hh);
@@ -715,7 +717,7 @@ async function initGL(){
     smooth.px = lerp(smooth.px, ndc.x<5?ptr.x:0, .06); smooth.py = lerp(smooth.py, ndc.y<5?ptr.y:0, .06);
     logo.rotation.y = lerp(-1.2, 0, k) + smooth.px*.22 + Math.sin(t*.4)*.05;
     logo.rotation.x = -smooth.py*.12 + lerp(0, .12, ep);
-    logo.position.y = lerp(-.7, 0, k) + lerp(0, .1, ep);
+    logo.position.y = lerp(-.7, 0, k) + lerp(0, camera.aspect < .8 ? -.75 : .1, ep);
     araMat.opacity = k * (1 - sstep(.28, .62, p)); ara.visible = araMat.opacity > .01;
     ara.position.z = -q*1.4; ara.position.y = -q*.35;
     oAng += dt*lerp(RM?0:.25, 1.1, q);
