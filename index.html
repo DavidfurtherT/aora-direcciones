@@ -165,5 +165,40 @@ const msg = "Equipo AORA: estas son las 10 direcciones de diseño para la web. R
 document.getElementById("wa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
 </script>
 
+<div id="viewer" hidden>
+  <iframe id="viewer-frame" title="Dirección de diseño" allow="autoplay; fullscreen"></iframe>
+</div>
+<style>
+#viewer{position:fixed;inset:0;z-index:2147482000;background:#0d1414}
+#viewer iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+html.viewing,html.viewing body{overflow:hidden}
+</style>
+<script>
+(function(){
+  var v=document.getElementById("viewer"), f=document.getElementById("viewer-frame");
+  function open(slug, push){
+    f.src="d/"+slug+".html"; v.hidden=false; document.documentElement.classList.add("viewing");
+    if(push) history.pushState({dir:slug},"","#"+slug);
+    setTimeout(function(){ try{ f.focus(); }catch(e){} }, 300);
+  }
+  function close(fromPop){
+    if(v.hidden) return;
+    v.hidden=true; document.documentElement.classList.remove("viewing"); f.src="about:blank";
+    if(!fromPop && history.state && history.state.dir) history.back();
+    if(window.AORA_MUSIC) window.AORA_MUSIC.dip();
+  }
+  window.AORA_CLOSE=function(){ close(false); };
+  document.addEventListener("click",function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="d/"]');
+    if(!a||e.metaKey||e.ctrlKey||e.shiftKey||e.button!==0) return;
+    var m=a.getAttribute("href").match(/^d\/([a-z]+)\.html/); if(!m) return;
+    e.preventDefault(); open(m[1], true);
+  });
+  window.addEventListener("popstate",function(e){ if(e.state&&e.state.dir) open(e.state.dir,false); else close(true); });
+  var h=location.hash.replace("#",""); if(/^[a-z]+$/.test(h) && document.getElementById(h)) open(h,false);
+})();
+</script>
+<script src="musica.js" defer></script>
+
 </body>
 </html>
